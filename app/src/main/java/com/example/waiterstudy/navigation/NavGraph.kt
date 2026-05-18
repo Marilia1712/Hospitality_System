@@ -6,6 +6,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.waiterstudy.viewmodel.OrderViewModel
+import com.example.waiterstudy.ui.screens.TableSelectionScreen
+import com.example.waiterstudy.ui.screens.ItemSelectionScreen
+import com.example.waiterstudy.ui.screens.ConfirmationScreen
+import com.example.waiterstudy.ui.screens.ErrorScreen
+import com.example.waiterstudy.ui.screens.SuccessScreen
+
 
 @Composable
 fun NavGraph() {
@@ -19,23 +25,38 @@ fun NavGraph() {
     ) {
 
         composable(AppScreen.TableSelection.route) {
-            // placeholder for now
+            TableSelectionScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
         }
 
         composable(AppScreen.ItemSelection.route) {
-            // placeholder for now
+            ItemSelectionScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
         }
 
         composable(AppScreen.Confirmation.route) {
-            // placeholder for now
+            ConfirmationScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
         }
 
         composable(AppScreen.Error.route) {
-            // placeholder for now
+            ErrorScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
         }
 
         composable(AppScreen.Success.route) {
-            // placeholder for now
+            SuccessScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
         }
     }
 }
