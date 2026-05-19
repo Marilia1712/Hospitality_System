@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import com.example.waiterstudy.navigation.AppScreen
 import androidx.compose.foundation.background
 import com.example.waiterstudy.ui.theme.BackgroundGray
+import com.example.waiterstudy.ui.theme.SuccessGreen
 import com.example.waiterstudy.viewmodel.OrderViewModel
 import kotlinx.coroutines.delay
 
@@ -41,14 +42,16 @@ fun SuccessScreen(
 
         Text(
             text = "✔",
-            style = MaterialTheme.typography.displayLarge
+            style = MaterialTheme.typography.displayLarge,
+            color = SuccessGreen
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
             text = "Order sent",
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.headlineSmall,
+            color = SuccessGreen
         )
     }
 }

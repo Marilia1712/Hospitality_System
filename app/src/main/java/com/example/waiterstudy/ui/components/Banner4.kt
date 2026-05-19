@@ -53,7 +53,7 @@ fun Banner4(
             colors = ButtonDefaults.buttonColors(
                 containerColor = ErrorRed,
                 disabledContainerColor = ErrorRed,
-                disabledContentColor = WhiteText
+                disabledContentColor = WhiteDisabledText
             )
         ) {
             Text("Send")
