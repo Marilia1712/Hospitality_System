@@ -25,4 +25,13 @@ class OrderViewModel : ViewModel() {
         selectedTable = 0
         cart.clear()
     }
+
+    fun updateItem(item: Item, quantity: Int) {
+
+        if (quantity <= 0) {
+            cart.remove(item)
+        } else {
+            cart[item] = quantity
+        }
+    }
 }

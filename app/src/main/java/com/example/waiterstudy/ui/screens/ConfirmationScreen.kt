@@ -8,7 +8,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.waiterstudy.navigation.AppScreen
 import androidx.compose.foundation.background
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.font.FontWeight
+import com.example.waiterstudy.ui.components.Banner3
 import com.example.waiterstudy.ui.theme.BackgroundGray
+import com.example.waiterstudy.ui.theme.WhiteText
 import com.example.waiterstudy.utils.OrderMatcher
 import com.example.waiterstudy.viewmodel.OrderViewModel
 
@@ -24,36 +28,84 @@ fun ConfirmationScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(BackgroundGray)
-            .padding(16.dp)
+            .padding(horizontal = 16.dp)
     ) {
 
+        Spacer(modifier = Modifier.height(72.dp))
+
         Text(
-            text = "Confirm order - Table ${viewModel.selectedTable}",
-            style = MaterialTheme.typography.headlineSmall
+            text = "Confirm order",
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            color = WhiteText,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+        )
+
+        Text(
+            text = "Table ${viewModel.selectedTable}",
+            style = MaterialTheme.typography.titleMedium,
+            color = WhiteText,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // ORDER LIST
-        cart.forEach { (item, qty) ->
-            Text(text = "${qty}x ${item.name}")
-        }
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        // ACTIONS
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+        // CENTERED ORDER LIST WITH QUANTITY SELECTOR
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Button(onClick = {
-                navController.popBackStack()
-            }) {
-                Text("Back")
-            }
+            cart.forEach { (item, qty) ->
 
-            Button(onClick = {
+                var quantity by remember { mutableStateOf(qty) }
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                ) {
+
+                    Text(
+                        text = item.name,
+                        color = WhiteText,
+                        modifier = Modifier.width(120.dp)
+                    )
+
+                    Button(onClick = {
+                        if (quantity > 0) {
+                            quantity--
+                            viewModel.updateItem(item, quantity)
+                        }
+                    }) {
+                        Text("-")
+                    }
+
+                    Text(
+                        text = "$quantity",
+                        color = WhiteText,
+                        modifier = Modifier.padding(horizontal = 12.dp)
+                    )
+
+                    Button(onClick = {
+                        quantity++
+                        viewModel.updateItem(item, quantity)
+                    }) {
+                        Text("+")
+                    }
+                }
+            }
+        }
+
+        Banner3(
+            onBack = {
+                navController.popBackStack()
+            },
+            onSend = {
 
                 val isCorrect = OrderMatcher.isOrderCorrect(
                     tableNumber = viewModel.selectedTable,
@@ -65,10 +117,7 @@ fun ConfirmationScreen(
                 } else {
                     navController.navigate(AppScreen.Error.route)
                 }
-
-            }) {
-                Text("SEND")
             }
-        }
+        )
     }
 }
