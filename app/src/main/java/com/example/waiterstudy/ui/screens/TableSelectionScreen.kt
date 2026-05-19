@@ -21,6 +21,7 @@ import com.example.waiterstudy.ui.theme.WhiteText
 import com.example.waiterstudy.ui.theme.DarkText
 import com.example.waiterstudy.ui.theme.BannerBlue
 import androidx.compose.ui.text.style.TextAlign
+import com.example.waiterstudy.ui.components.Banner1
 
 @Composable
 fun TableSelectionScreen(
@@ -90,41 +91,14 @@ fun TableSelectionScreen(
         }
 
         // BOTTOM BANNER
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp)
-                .background(BannerBlue)
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-            Text(
-                text = if (selectedTable != null)
-                    "Table $selectedTable"
-                else
-                    "Table -",
-                style = MaterialTheme.typography.headlineSmall,
-                color = WhiteText,
-                fontWeight = FontWeight.Bold
-            )
-
-            Spacer(modifier = Modifier.width(30.dp))
-
-            Button(
-                onClick = {
-                    selectedTable?.let {
-                        viewModel.selectedTable = it
-                        navController.navigate(AppScreen.ItemSelection.route)
-                    }
-                },
-                enabled = selectedTable != null,
-                modifier = Modifier.weight(1f)
-            ) {
-
-                Text("Enter")
+        Banner1(
+            selectedTable = selectedTable,
+            onEnter = {
+                selectedTable?.let {
+                    viewModel.selectedTable = it
+                    navController.navigate(AppScreen.ItemSelection.route)
+                }
             }
-
-        }
+        )
     }
 }
