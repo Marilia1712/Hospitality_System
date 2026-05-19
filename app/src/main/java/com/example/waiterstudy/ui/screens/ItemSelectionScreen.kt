@@ -17,14 +17,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.waiterstudy.R
 import com.example.waiterstudy.data.Item
 import com.example.waiterstudy.data.MenuItems
 import com.example.waiterstudy.navigation.AppScreen
 import com.example.waiterstudy.ui.theme.*
 import com.example.waiterstudy.viewmodel.OrderViewModel
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
+import com.example.waiterstudy.ui.components.Banner2
 
 @Composable
 fun ItemSelectionScreen(
@@ -123,95 +121,24 @@ fun ItemSelectionScreen(
         }
 
         // BOTTOM BANNER
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp)
-                .background(DarkButton)
-                .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
+        Banner2(
+            quantity = quantity,
+            cartIsEmpty = viewModel.cart.isEmpty(),
+            selectedItemName = selectedItem?.name,
 
-            // BACK (fixed square)
-            Button(
-                onClick = { navController.popBackStack() },
-                modifier = Modifier.size(56.dp),
-                contentPadding = PaddingValues(0.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = WhiteText),
-                shape = RoundedCornerShape(10.dp)
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.back_button),
-                    contentDescription = "Back",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
-            }
-
-            // QUANTITY (takes remaining space, but not oversized)
-            Row(
-                modifier = Modifier.weight(1f),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-
-                Button(onClick = {
-                    if (quantity > 1) quantity--
-                }) {
-                    Text("-")
+            onBack = { navController.popBackStack() },
+            onAdd = {
+                selectedItem?.let {
+                    viewModel.addItem(it, quantity)
                 }
-
-                Text(
-                    text = "$quantity",
-                    color = WhiteText,
-                    modifier = Modifier.padding(horizontal = 12.dp)
-                )
-
-                Button(onClick = {
-                    quantity++
-                }) {
-                    Text("+")
-                }
-            }
-
-            // ADD (normal flexible button, not weight-driven)
-            Button(
-                onClick = {
-                    selectedItem?.let {
-                        viewModel.addItem(it, quantity)
-                    }
-                    selectedItem = null
-                    quantity = 1
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = BlueButton),
-                shape = RoundedCornerShape(10.dp)
-            ) {
-                Text("Add")
-            }
-
-            // CART (fixed square)
-            Button(
-                onClick = {
-                    navController.navigate(AppScreen.Confirmation.route)
-                },
-                modifier = Modifier.size(56.dp),
-                contentPadding = PaddingValues(0.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = WhiteText),
-                shape = RoundedCornerShape(10.dp)
-            ) {
-                Image(
-                    painter = painterResource(
-                        id = if (viewModel.cart.isEmpty())
-                            R.drawable.empty_cart
-                        else
-                            R.drawable.full_cart
-                    ),
-                    contentDescription = "Cart",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
-            }
-        }
+                selectedItem = null
+                quantity = 1
+            },
+            onCart = {
+                navController.navigate(AppScreen.Confirmation.route)
+            },
+            onIncrease = { quantity++ },
+            onDecrease = { if (quantity > 1) quantity-- }
+        )
     }
 }
