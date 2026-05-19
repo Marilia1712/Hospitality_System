@@ -17,6 +17,10 @@ import com.example.waiterstudy.navigation.AppScreen
 import com.example.waiterstudy.ui.theme.BackgroundGray
 import com.example.waiterstudy.ui.theme.DarkButton
 import com.example.waiterstudy.viewmodel.OrderViewModel
+import com.example.waiterstudy.ui.theme.WhiteText
+import com.example.waiterstudy.ui.theme.DarkText
+import com.example.waiterstudy.ui.theme.BannerBlue
+import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun TableSelectionScreen(
@@ -31,57 +35,96 @@ fun TableSelectionScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(BackgroundGray)
-            .padding(16.dp)
+            .padding(horizontal = 16.dp)
     ) {
+
+        Spacer(modifier = Modifier.height(72.dp))
 
         Text(
             text = "Select a table",
-            style = MaterialTheme.typography.headlineMedium
+            style = MaterialTheme.typography.headlineLarge,
+            fontWeight = FontWeight.Bold,
+            color = DarkText,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
-
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
+        Box(
             modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            contentAlignment = Alignment.Center
         ) {
 
-            items(tables) { table ->
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
 
-                Box(
-                    modifier = Modifier
-                        .aspectRatio(1f)
-                        .background(
-                            if (selectedTable == table) DarkButton else MaterialTheme.colorScheme.surface
+                items(tables) { table ->
+
+                    Box(
+                        modifier = Modifier
+                            .aspectRatio(1f)
+                            .background(
+                                if (selectedTable == table)
+                                    BannerBlue
+                                else
+                                    DarkButton
+                            )
+                            .clickable {
+                                selectedTable = table
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+
+                        Text(
+                            text = table.toString(),
+                            style = MaterialTheme.typography.headlineLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = WhiteText
                         )
-                        .clickable {
-                            selectedTable = table
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = table.toString(),
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.Bold
-                    )
+                    }
                 }
             }
         }
 
-        // Bottom banner (temporary simple version)
-        Button(
-            onClick = {
-                selectedTable?.let {
-                    viewModel.selectedTable = it
-                    navController.navigate(AppScreen.ItemSelection.route)
-                }
-            },
-            enabled = selectedTable != null,
-            modifier = Modifier.fillMaxWidth()
+        // BOTTOM BANNER
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp)
+                .background(BannerBlue)
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Enter")
+
+            Text(
+                text = if (selectedTable != null)
+                    "Table $selectedTable"
+                else
+                    "Table -",
+                style = MaterialTheme.typography.headlineSmall,
+                color = WhiteText,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.width(30.dp))
+
+            Button(
+                onClick = {
+                    selectedTable?.let {
+                        viewModel.selectedTable = it
+                        navController.navigate(AppScreen.ItemSelection.route)
+                    }
+                },
+                enabled = selectedTable != null,
+                modifier = Modifier.weight(1f)
+            ) {
+
+                Text("Enter")
+            }
+
         }
     }
 }

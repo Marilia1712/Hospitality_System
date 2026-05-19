@@ -2,26 +2,13 @@ package com.example.waiterstudy.ui.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 
-private val LightColors = lightColorScheme(
+private val AppColors = darkColorScheme(
     primary = DarkButton,
     secondary = BannerBlue,
     background = BackgroundGray,
-    surface = BackgroundGray,
-    onPrimary = WhiteText,
-    onSecondary = WhiteText,
-    onBackground = Color.Black,
-    onSurface = Color.Black
-)
-
-private val DarkColors = darkColorScheme(
-    primary = DarkButton,
-    secondary = BannerBlue,
-    background = Color(0xFF121212),
-    surface = Color(0xFF121212),
+    surface = DarkButton,
     onPrimary = WhiteText,
     onSecondary = WhiteText,
     onBackground = WhiteText,
@@ -30,11 +17,10 @@ private val DarkColors = darkColorScheme(
 
 @Composable
 fun WaiterStudyTheme(
-    darkTheme: Boolean = false,
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colorScheme = if (darkTheme) DarkColors else LightColors,
+        colorScheme = AppColors,
         typography = Typography,
         content = content
     )
