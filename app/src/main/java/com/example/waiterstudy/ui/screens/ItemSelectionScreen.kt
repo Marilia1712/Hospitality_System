@@ -1,5 +1,6 @@
 package com.example.waiterstudy.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,11 +11,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.waiterstudy.data.MenuItems
 import com.example.waiterstudy.navigation.AppScreen
-import com.example.waiterstudy.ui.theme.BackgroundGray
+import com.example.waiterstudy.ui.theme.*
 import com.example.waiterstudy.viewmodel.OrderViewModel
 
 @Composable
@@ -32,84 +37,125 @@ fun ItemSelectionScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(BackgroundGray)
-            .padding(16.dp)
+            .padding(horizontal = 16.dp)
     ) {
 
+        Spacer(modifier = Modifier.height(72.dp))
+
         Text(
-            text = "Place an order - Table ${viewModel.selectedTable}",
-            style = MaterialTheme.typography.headlineSmall
+            text = "Place an order",
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            color = DarkText,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = "Table ${viewModel.selectedTable}",
+            style = MaterialTheme.typography.headlineSmall,
+            color = WhiteText,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
+        )
 
-        // ITEM GRID
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
+        Box(
             modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            contentAlignment = Alignment.Center
         ) {
 
-            items(items) { item ->
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
 
-                Card(
-                    modifier = Modifier
-                        .aspectRatio(1f)
-                        .clickable {
-                            selectedItem = item
-                            quantity = 1
-                        }
-                ) {
+                items(items) { item ->
 
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxSize()
+                    Card(
+                        modifier = Modifier
+                            .aspectRatio(1f)
+                            .clickable {
+                                selectedItem = item
+                                quantity = 1
+                            },
+                        colors = CardDefaults.cardColors(
+                            containerColor =
+                                if (selectedItem == item)
+                                    BannerBlue
+                                else
+                                    DarkButton
+                        )
                     ) {
-                        Text(item.name)
+
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(8.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+
+                            Image(
+                                painter = painterResource(id = item.imageRes),
+                                contentDescription = item.name,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f),
+                                contentScale = ContentScale.Crop
+                            )
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Text(
+                                text = item.name,
+                                color = WhiteText,
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
-
-        // QUANTITY SELECTOR
+        // BOTTOM BANNER
         Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp)
+                .background(BannerBlue)
+                .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-
-            Button(onClick = {
-                if (quantity > 1) quantity--
-            }) {
-                Text("-")
-            }
-
-            Text(
-                text = "$quantity",
-                style = MaterialTheme.typography.headlineMedium
-            )
-
-            Button(onClick = {
-                quantity++
-            }) {
-                Text("+")
-            }
-        }
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        // ACTIONS
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
 
             Button(onClick = {
                 navController.popBackStack()
             }) {
                 Text("Back")
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Button(onClick = {
+                    if (quantity > 1) quantity--
+                }) {
+                    Text("-")
+                }
+
+                Text(
+                    text = "$quantity",
+                    color = WhiteText,
+                    modifier = Modifier.padding(horizontal = 8.dp)
+                )
+
+                Button(onClick = {
+                    quantity++
+                }) {
+                    Text("+")
+                }
             }
 
             Button(onClick = {
