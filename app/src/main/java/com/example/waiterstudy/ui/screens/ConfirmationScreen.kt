@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
 import com.example.waiterstudy.ui.components.Banner3
 import com.example.waiterstudy.ui.theme.BackgroundGray
+import com.example.waiterstudy.ui.theme.DarkText
 import com.example.waiterstudy.ui.theme.WhiteText
 import com.example.waiterstudy.utils.OrderMatcher
 import com.example.waiterstudy.viewmodel.OrderViewModel
@@ -37,7 +38,7 @@ fun ConfirmationScreen(
             text = "Confirm order",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
-            color = WhiteText,
+            color = DarkText,
             modifier = Modifier.fillMaxWidth(),
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
@@ -45,7 +46,7 @@ fun ConfirmationScreen(
         Text(
             text = "Table ${viewModel.selectedTable}",
             style = MaterialTheme.typography.titleMedium,
-            color = WhiteText,
+            color = DarkText,
             modifier = Modifier.fillMaxWidth(),
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
@@ -70,12 +71,7 @@ fun ConfirmationScreen(
                     modifier = Modifier.padding(vertical = 8.dp)
                 ) {
 
-                    Text(
-                        text = item.name,
-                        color = WhiteText,
-                        modifier = Modifier.width(120.dp)
-                    )
-
+                    //QUANTITY MODIFIER
                     Button(onClick = {
                         if (quantity > 0) {
                             quantity--
@@ -87,8 +83,9 @@ fun ConfirmationScreen(
 
                     Text(
                         text = "$quantity",
-                        color = WhiteText,
-                        modifier = Modifier.padding(horizontal = 12.dp)
+                        color = DarkText,
+                        modifier = Modifier.padding(horizontal = 12.dp),
+                        fontWeight = FontWeight.Bold,
                     )
 
                     Button(onClick = {
@@ -97,10 +94,22 @@ fun ConfirmationScreen(
                     }) {
                         Text("+")
                     }
+                    //////////////////
+
+                    Spacer(modifier = Modifier.width(20.dp))
+
+                    //ITEM NAME
+                    Text(
+                        text = item.name,
+                        color = DarkText,
+                        modifier = Modifier.width(120.dp),
+                        fontWeight = FontWeight.Bold,
+                    )
                 }
             }
         }
 
+        //BOTTOM BANNER
         Banner3(
             onBack = {
                 navController.popBackStack()

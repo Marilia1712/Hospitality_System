@@ -1,12 +1,17 @@
 package com.example.waiterstudy.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.waiterstudy.R
 import com.example.waiterstudy.ui.theme.*
 
 @Composable
@@ -29,16 +34,23 @@ fun Banner3(
         Button(
             onClick = onBack,
             modifier = Modifier.size(56.dp),
+            contentPadding = PaddingValues(0.dp),
             colors = ButtonDefaults.buttonColors(containerColor = WhiteText),
-            contentPadding = PaddingValues(0.dp)
+            shape = RoundedCornerShape(10.dp)
         ) {
-            Text("<") // placeholder (you can replace with icon if you want)
+            Image(
+                painter = painterResource(R.drawable.back_button),
+                contentDescription = "Back",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
         }
 
         // SEND (fills remaining space)
         Button(
             onClick = onSend,
             modifier = Modifier.weight(1f),
+            shape = RoundedCornerShape(10.dp),
             colors = ButtonDefaults.buttonColors(containerColor = BlueButton)
         ) {
             Text("SEND")
