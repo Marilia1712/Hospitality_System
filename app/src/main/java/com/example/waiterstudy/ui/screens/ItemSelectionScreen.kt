@@ -17,10 +17,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.waiterstudy.R
+import com.example.waiterstudy.data.Item
 import com.example.waiterstudy.data.MenuItems
 import com.example.waiterstudy.navigation.AppScreen
 import com.example.waiterstudy.ui.theme.*
 import com.example.waiterstudy.viewmodel.OrderViewModel
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 
 @Composable
 fun ItemSelectionScreen(
@@ -30,7 +34,7 @@ fun ItemSelectionScreen(
 
     val items = MenuItems.items
 
-    var selectedItem by remember { mutableStateOf(items.first()) }
+    var selectedItem by remember { mutableStateOf<Item?>(null) }
     var quantity by remember { mutableStateOf(1) }
 
     Column(
@@ -46,14 +50,14 @@ fun ItemSelectionScreen(
             text = "Place an order",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
-            color = DarkText,
+            color = WhiteText,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
 
         Text(
             text = "Table ${viewModel.selectedTable}",
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.titleMedium,
             color = WhiteText,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
@@ -123,20 +127,33 @@ fun ItemSelectionScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 24.dp)
-                .background(BannerBlue)
+                .background(DarkButton)
                 .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
 
-            Button(onClick = {
-                navController.popBackStack()
-            }) {
-                Text("Back")
+            // BACK (fixed square)
+            Button(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier.size(56.dp),
+                contentPadding = PaddingValues(0.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = WhiteText),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.back_button),
+                    contentDescription = "Back",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
             }
 
+            // QUANTITY (takes remaining space, but not oversized)
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
 
                 Button(onClick = {
@@ -148,7 +165,7 @@ fun ItemSelectionScreen(
                 Text(
                     text = "$quantity",
                     color = WhiteText,
-                    modifier = Modifier.padding(horizontal = 8.dp)
+                    modifier = Modifier.padding(horizontal = 12.dp)
                 )
 
                 Button(onClick = {
@@ -158,16 +175,42 @@ fun ItemSelectionScreen(
                 }
             }
 
-            Button(onClick = {
-                viewModel.addItem(selectedItem, quantity)
-            }) {
+            // ADD (normal flexible button, not weight-driven)
+            Button(
+                onClick = {
+                    selectedItem?.let {
+                        viewModel.addItem(it, quantity)
+                    }
+                    selectedItem = null
+                    quantity = 1
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = BlueButton),
+                shape = RoundedCornerShape(10.dp)
+            ) {
                 Text("Add")
             }
 
-            Button(onClick = {
-                navController.navigate(AppScreen.Confirmation.route)
-            }) {
-                Text("Cart")
+            // CART (fixed square)
+            Button(
+                onClick = {
+                    navController.navigate(AppScreen.Confirmation.route)
+                },
+                modifier = Modifier.size(56.dp),
+                contentPadding = PaddingValues(0.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = WhiteText),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Image(
+                    painter = painterResource(
+                        id = if (viewModel.cart.isEmpty())
+                            R.drawable.empty_cart
+                        else
+                            R.drawable.full_cart
+                    ),
+                    contentDescription = "Cart",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
             }
         }
     }

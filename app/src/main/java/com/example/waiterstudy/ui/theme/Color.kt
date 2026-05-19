@@ -13,3 +13,5 @@ val WhiteText = Color(0xFFFFFFFF)
 val DarkText = Color(0XFF6F6F6F)
 
 val ErrorRed = Color(0xFFB3261E)
+
+val BlueButton = Color(0xFF4A90E2)
