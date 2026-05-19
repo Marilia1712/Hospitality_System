@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 
 private val AppColors = darkColorScheme(
     primary = DarkButton,
-    secondary = BannerBlue,
+    secondary = BlueButton,
     background = BackgroundGray,
     surface = DarkButton,
     onPrimary = WhiteText,

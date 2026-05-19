@@ -2,6 +2,7 @@ package com.example.waiterstudy.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,7 +20,7 @@ fun Banner1(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 24.dp)
-            .background(BannerBlue)
+            .background(DarkButton, shape = RoundedCornerShape(12.dp))
             .padding(16.dp),
         verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
     ) {
@@ -36,9 +37,17 @@ fun Banner1(
         Button(
             onClick = onEnter,
             enabled = selectedTable != null,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = BlueButton,
+                disabledContainerColor = BlueButtonDisabled
+            )
         ) {
-            Text("Enter")
+            Text(
+                text = "Enter",
+                color = WhiteText
+            )
         }
     }
 }

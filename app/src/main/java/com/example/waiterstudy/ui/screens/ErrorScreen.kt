@@ -2,6 +2,7 @@ package com.example.waiterstudy.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -63,7 +64,7 @@ fun ErrorScreen(
                 text = "Incorrect order. Try again.",
                 color = WhiteText,
                 modifier = Modifier
-                    .background(ErrorRed)
+                    .background(ErrorRed, shape= RoundedCornerShape(12.dp))
                     .padding(12.dp),
                 fontWeight = FontWeight.Bold
             )

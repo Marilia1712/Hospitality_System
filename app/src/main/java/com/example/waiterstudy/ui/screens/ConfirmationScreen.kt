@@ -8,10 +8,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.waiterstudy.navigation.AppScreen
 import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import com.example.waiterstudy.ui.components.Banner3
 import com.example.waiterstudy.ui.theme.BackgroundGray
+import com.example.waiterstudy.ui.theme.DarkButton
 import com.example.waiterstudy.ui.theme.DarkText
 import com.example.waiterstudy.ui.theme.WhiteText
 import com.example.waiterstudy.utils.OrderMatcher
@@ -34,13 +37,14 @@ fun ConfirmationScreen(
 
         Spacer(modifier = Modifier.height(72.dp))
 
+        // HEADER
         Text(
             text = "Confirm order",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             color = DarkText,
             modifier = Modifier.fillMaxWidth(),
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            textAlign = TextAlign.Center
         )
 
         Text(
@@ -48,73 +52,82 @@ fun ConfirmationScreen(
             style = MaterialTheme.typography.titleMedium,
             color = DarkText,
             modifier = Modifier.fillMaxWidth(),
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            textAlign = TextAlign.Center
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // CENTERED ORDER LIST WITH QUANTITY SELECTOR
-        Column(
+        // ORDER RECAP AREA
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+                .weight(1f),   // THIS is the key
+            contentAlignment = Alignment.Center
         ) {
 
-            cart.forEach { (item, qty) ->
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(DarkButton, shape = RoundedCornerShape(12.dp))
+                    .padding(12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
-                var quantity by remember { mutableStateOf(qty) }
+                cart.forEach { (item, qty) ->
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                ) {
+                    var quantity by remember { mutableStateOf(qty) }
 
-                    //QUANTITY MODIFIER
-                    Button(onClick = {
-                        if (quantity > 0) {
-                            quantity--
-                            viewModel.updateItem(item, quantity)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+
+                        Text(
+                            text = item.name,
+                            color = WhiteText,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.width(120.dp)
+                        )
+
+                        Row(
+                            modifier = Modifier
+                                .background(WhiteText, shape = RoundedCornerShape(12.dp))
+                                .padding(horizontal = 8.dp, vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+
+                            Button(onClick = {
+                                if (quantity > 0) {
+                                    quantity--
+                                    viewModel.updateItem(item, quantity)
+                                }
+                            }) {
+                                Text("-")
+                            }
+
+                            Text(
+                                text = "$quantity",
+                                color = DarkText,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(horizontal = 12.dp)
+                            )
+
+                            Button(onClick = {
+                                quantity++
+                                viewModel.updateItem(item, quantity)
+                            }) {
+                                Text("+")
+                            }
                         }
-                    }) {
-                        Text("-")
                     }
-
-                    Text(
-                        text = "$quantity",
-                        color = DarkText,
-                        modifier = Modifier.padding(horizontal = 12.dp),
-                        fontWeight = FontWeight.Bold,
-                    )
-
-                    Button(onClick = {
-                        quantity++
-                        viewModel.updateItem(item, quantity)
-                    }) {
-                        Text("+")
-                    }
-                    //////////////////
-
-                    Spacer(modifier = Modifier.width(20.dp))
-
-                    //ITEM NAME
-                    Text(
-                        text = item.name,
-                        color = DarkText,
-                        modifier = Modifier.width(120.dp),
-                        fontWeight = FontWeight.Bold,
-                    )
                 }
             }
         }
 
-        //BOTTOM BANNER
+        // BOTTOM BANNER
         Banner3(
-            onBack = {
-                navController.popBackStack()
-            },
+            onBack = { navController.popBackStack() },
             onSend = {
 
                 val isCorrect = OrderMatcher.isOrderCorrect(
@@ -130,4 +143,6 @@ fun ConfirmationScreen(
             }
         )
     }
+
+
 }

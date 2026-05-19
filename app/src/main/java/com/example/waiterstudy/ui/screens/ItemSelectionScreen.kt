@@ -48,7 +48,7 @@ fun ItemSelectionScreen(
             text = "Place an order",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
-            color = WhiteText,
+            color = DarkText,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
@@ -56,7 +56,7 @@ fun ItemSelectionScreen(
         Text(
             text = "Table ${viewModel.selectedTable}",
             style = MaterialTheme.typography.titleMedium,
-            color = WhiteText,
+            color = DarkText,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
@@ -84,7 +84,7 @@ fun ItemSelectionScreen(
                         colors = CardDefaults.cardColors(
                             containerColor =
                                 if (selectedItem == item)
-                                    BannerBlue
+                                    BlueButton
                                 else
                                     DarkButton
                         )

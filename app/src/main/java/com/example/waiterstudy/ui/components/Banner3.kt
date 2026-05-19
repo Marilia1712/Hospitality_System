@@ -24,7 +24,7 @@ fun Banner3(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 24.dp)
-            .background(DarkButton)
+            .background(DarkButton, shape = RoundedCornerShape(12.dp))
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -36,7 +36,7 @@ fun Banner3(
             modifier = Modifier.size(56.dp),
             contentPadding = PaddingValues(0.dp),
             colors = ButtonDefaults.buttonColors(containerColor = WhiteText),
-            shape = RoundedCornerShape(10.dp)
+            shape = RoundedCornerShape(12.dp)
         ) {
             Image(
                 painter = painterResource(R.drawable.back_button),
@@ -46,14 +46,14 @@ fun Banner3(
             )
         }
 
-        // SEND (fills remaining space)
+        // SEND
         Button(
             onClick = onSend,
             modifier = Modifier.weight(1f),
-            shape = RoundedCornerShape(10.dp),
+            shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(containerColor = BlueButton)
         ) {
-            Text("SEND")
+            Text("Send")
         }
     }
 }

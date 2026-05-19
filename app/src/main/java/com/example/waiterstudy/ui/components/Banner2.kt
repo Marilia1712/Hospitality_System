@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.waiterstudy.R
 import com.example.waiterstudy.ui.theme.*
@@ -31,7 +32,7 @@ fun Banner2(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 24.dp)
-            .background(DarkButton)
+            .background(DarkButton, shape= RoundedCornerShape(12.dp))
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -43,7 +44,7 @@ fun Banner2(
             modifier = Modifier.size(56.dp),
             contentPadding = PaddingValues(0.dp),
             colors = ButtonDefaults.buttonColors(containerColor = WhiteText),
-            shape = RoundedCornerShape(10.dp)
+            shape = RoundedCornerShape(12.dp)
         ) {
             Image(
                 painter = painterResource(R.drawable.back_button),
@@ -55,7 +56,10 @@ fun Banner2(
 
         // QUANTITY
         Row(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .background(WhiteText, shape = RoundedCornerShape(12.dp))
+                .padding(horizontal = 12.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -66,8 +70,10 @@ fun Banner2(
 
             Text(
                 text = "$quantity",
-                color = WhiteText,
-                modifier = Modifier.padding(horizontal = 12.dp)
+                color = DarkText,
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(horizontal = 16.dp)
             )
 
             Button(onClick = onIncrease) {
@@ -79,7 +85,7 @@ fun Banner2(
         Button(
             onClick = onAdd,
             colors = ButtonDefaults.buttonColors(containerColor = BlueButton),
-            shape = RoundedCornerShape(10.dp)
+            shape = RoundedCornerShape(12.dp)
         ) {
             Text("Add")
         }
@@ -90,7 +96,7 @@ fun Banner2(
             modifier = Modifier.size(56.dp),
             contentPadding = PaddingValues(0.dp),
             colors = ButtonDefaults.buttonColors(containerColor = WhiteText),
-            shape = RoundedCornerShape(10.dp)
+            shape = RoundedCornerShape(12.dp)
         ) {
             Image(
                 painter = painterResource(

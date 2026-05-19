@@ -23,7 +23,7 @@ fun Banner4(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 24.dp)
-            .background(DarkButton)
+            .background(DarkButton, shape= RoundedCornerShape(12.dp))
             .padding(12.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -49,14 +49,14 @@ fun Banner4(
             onClick = { },
             enabled = false,
             modifier = Modifier.weight(1f),
-            shape = RoundedCornerShape(10.dp),
+            shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = ErrorRed,
                 disabledContainerColor = ErrorRed,
                 disabledContentColor = WhiteText
             )
         ) {
-            Text("SEND")
+            Text("Send")
         }
     }
 }

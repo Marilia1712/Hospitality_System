@@ -4,6 +4,8 @@ object FakeOrders {
 
     val orders = listOf(
 
+        // Table 2
+        // 1x Coca Cola 1x Beer
         Order(
             tableNumber = 2,
             items = mapOf(
@@ -12,6 +14,8 @@ object FakeOrders {
             )
         ),
 
+        // Table 5
+        // 2x Water, 1x Coffee
         Order(
             tableNumber = 5,
             items = mapOf(
@@ -20,6 +24,8 @@ object FakeOrders {
             )
         ),
 
+        // Table 7
+        // 1x Wine, 2x Spritz
         Order(
             tableNumber = 7,
             items = mapOf(

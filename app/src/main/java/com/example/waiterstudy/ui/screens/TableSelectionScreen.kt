@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,9 +20,9 @@ import com.example.waiterstudy.ui.theme.DarkButton
 import com.example.waiterstudy.viewmodel.OrderViewModel
 import com.example.waiterstudy.ui.theme.WhiteText
 import com.example.waiterstudy.ui.theme.DarkText
-import com.example.waiterstudy.ui.theme.BannerBlue
 import androidx.compose.ui.text.style.TextAlign
 import com.example.waiterstudy.ui.components.Banner1
+import com.example.waiterstudy.ui.theme.BlueButton
 
 @Composable
 fun TableSelectionScreen(
@@ -36,7 +37,7 @@ fun TableSelectionScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(BackgroundGray)
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 16.dp),
     ) {
 
         Spacer(modifier = Modifier.height(72.dp))
@@ -68,10 +69,8 @@ fun TableSelectionScreen(
                         modifier = Modifier
                             .aspectRatio(1f)
                             .background(
-                                if (selectedTable == table)
-                                    BannerBlue
-                                else
-                                    DarkButton
+                                color = if (selectedTable == table) BlueButton else DarkButton,
+                                shape = RoundedCornerShape(12.dp)
                             )
                             .clickable {
                                 selectedTable = table
