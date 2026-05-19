@@ -58,7 +58,8 @@ fun ConfirmationScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
         ) {
 
             cart.forEach { (item, qty) ->
