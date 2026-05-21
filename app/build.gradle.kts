@@ -12,7 +12,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.waiterstudy"
+        applicationId = "com.example.waiterstudy.top"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
