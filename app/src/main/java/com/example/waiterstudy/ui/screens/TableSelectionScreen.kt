@@ -51,6 +51,17 @@ fun TableSelectionScreen(
             textAlign = TextAlign.Center
         )
 
+        // TOP BANNER
+        Banner1(
+            selectedTable = selectedTable,
+            onEnter = {
+                selectedTable?.let {
+                    viewModel.selectedTable = it
+                    navController.navigate(AppScreen.ItemSelection.route)
+                }
+            }
+        )
+
         Box(
             modifier = Modifier.weight(1f),
             contentAlignment = Alignment.Center
@@ -89,7 +100,7 @@ fun TableSelectionScreen(
             }
         }
 
-        // BOTTOM BANNER
+        /*// BOTTOM BANNER
         Banner1(
             selectedTable = selectedTable,
             onEnter = {
@@ -98,6 +109,6 @@ fun TableSelectionScreen(
                     navController.navigate(AppScreen.ItemSelection.route)
                 }
             }
-        )
+        )*/
     }
 }

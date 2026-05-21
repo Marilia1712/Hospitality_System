@@ -61,6 +61,27 @@ fun ItemSelectionScreen(
             textAlign = TextAlign.Center
         )
 
+        // TOP BANNER
+        Banner2(
+            quantity = quantity,
+            cartIsEmpty = viewModel.cart.isEmpty(),
+            selectedItemName = selectedItem?.name,
+
+            onBack = { navController.popBackStack() },
+            onAdd = {
+                selectedItem?.let {
+                    viewModel.addItem(it, quantity)
+                }
+                selectedItem = null
+                quantity = 1
+            },
+            onCart = {
+                navController.navigate(AppScreen.Confirmation.route)
+            },
+            onIncrease = { quantity++ },
+            onDecrease = { if (quantity > 1) quantity-- }
+        )
+
         Box(
             modifier = Modifier.weight(1f),
             contentAlignment = Alignment.Center
@@ -120,7 +141,7 @@ fun ItemSelectionScreen(
             }
         }
 
-        // BOTTOM BANNER
+        /*// BOTTOM BANNER
         Banner2(
             quantity = quantity,
             cartIsEmpty = viewModel.cart.isEmpty(),
@@ -139,6 +160,6 @@ fun ItemSelectionScreen(
             },
             onIncrease = { quantity++ },
             onDecrease = { if (quantity > 1) quantity-- }
-        )
+        )*/
     }
 }

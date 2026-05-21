@@ -51,6 +51,14 @@ fun ErrorScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
+        //TOP BANNER
+        Banner4(
+            onBack = {
+                navController.popBackStack()
+            },
+            onSend = { }
+        )
+
         // ORDER LIST
         Column(
             modifier = Modifier
@@ -81,12 +89,12 @@ fun ErrorScreen(
         }
 
 
-        //BOTTOM BANNER
+        /*//BOTTOM BANNER
         Banner4(
             onBack = {
                 navController.popBackStack()
             },
             onSend = { }
-        )
+        )*/
     }
 }

@@ -57,6 +57,24 @@ fun ConfirmationScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
+        // TOP BANNER
+        Banner3(
+            onBack = { navController.popBackStack() },
+            onSend = {
+
+                val isCorrect = OrderMatcher.isOrderCorrect(
+                    tableNumber = viewModel.selectedTable,
+                    currentOrder = cart
+                )
+
+                if (isCorrect) {
+                    navController.navigate(AppScreen.Success.route)
+                } else {
+                    navController.navigate(AppScreen.Error.route)
+                }
+            }
+        )
+
         // ORDER RECAP AREA
         Box(
             modifier = Modifier
@@ -125,7 +143,8 @@ fun ConfirmationScreen(
             }
         }
 
-        // BOTTOM BANNER
+
+        /*// BOTTOM BANNER
         Banner3(
             onBack = { navController.popBackStack() },
             onSend = {
@@ -141,7 +160,7 @@ fun ConfirmationScreen(
                     navController.navigate(AppScreen.Error.route)
                 }
             }
-        )
+        )*/
     }
 
 
