@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.waiterstudy.R
 import com.example.waiterstudy.ui.theme.*
@@ -22,33 +23,43 @@ fun Banner4(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 24.dp)
-            .background(DarkButton, shape= RoundedCornerShape(12.dp))
-            .padding(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+            .padding(bottom = 16.dp)
+            .background(
+                DarkButton,
+                shape = RoundedCornerShape(12.dp)
+            )
+            .padding(horizontal = 8.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
 
         // BACK
         Button(
             onClick = onBack,
-            modifier = Modifier.size(56.dp),
+            modifier = Modifier
+                .weight(0.18f)
+                .aspectRatio(1f),
             contentPadding = PaddingValues(0.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = WhiteText),
-            shape = RoundedCornerShape(10.dp)
+            colors = ButtonDefaults.buttonColors(
+                containerColor = WhiteText
+            ),
+            shape = RoundedCornerShape(12.dp)
         ) {
+
             Image(
-                painter = painterResource(R.drawable.back_button),
+                painter = painterResource(
+                    R.drawable.back_button
+                ),
                 contentDescription = "Back",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
         }
 
-        // SEND (disabled + red)
+        // SEND (disabled)
         Button(
-            onClick = { },
+            onClick = onSend,
             enabled = false,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(0.82f),
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = ErrorRed,
@@ -56,7 +67,11 @@ fun Banner4(
                 disabledContentColor = WhiteDisabledText
             )
         ) {
-            Text("Send")
+
+            Text(
+                text = "Send",
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }

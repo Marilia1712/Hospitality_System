@@ -31,23 +31,33 @@ fun Banner2(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 24.dp)
-            .background(DarkButton, shape= RoundedCornerShape(12.dp))
-            .padding(12.dp),
+            .padding(bottom = 16.dp)
+            .background(
+                DarkButton,
+                shape = RoundedCornerShape(12.dp)
+            )
+            .padding(horizontal = 8.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
 
         // BACK
         Button(
             onClick = onBack,
-            modifier = Modifier.size(56.dp),
+            modifier = Modifier
+                .weight(0.15f)
+                .aspectRatio(1f),
             contentPadding = PaddingValues(0.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = WhiteText),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = WhiteText
+            ),
             shape = RoundedCornerShape(12.dp)
         ) {
+
             Image(
-                painter = painterResource(R.drawable.back_button),
+                painter = painterResource(
+                    R.drawable.back_button
+                ),
                 contentDescription = "Back",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
@@ -57,50 +67,92 @@ fun Banner2(
         // QUANTITY
         Row(
             modifier = Modifier
-                .weight(1f)
-                .background(WhiteText, shape = RoundedCornerShape(12.dp))
-                .padding(horizontal = 12.dp, vertical = 8.dp),
+                .weight(0.45f)
+                .background(
+                    WhiteText,
+                    RoundedCornerShape(12.dp)
+                )
+                .padding(
+                    horizontal = 6.dp,
+                    vertical = 6.dp
+                ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
 
-            Button(onClick = onDecrease) {
-                Text("-")
+            Button(
+                onClick = onDecrease,
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = DarkButton
+                ),
+                contentPadding = PaddingValues(0.dp)
+            ) {
+
+                Text(
+                    "-",
+                    fontWeight = FontWeight.Bold
+                )
             }
 
             Text(
                 text = "$quantity",
                 color = DarkText,
                 fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(
+                    horizontal = 10.dp
+                )
             )
 
-            Button(onClick = onIncrease) {
-                Text("+")
+            Button(
+                onClick = onIncrease,
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = DarkButton
+                ),
+                contentPadding = PaddingValues(0.dp)
+            ) {
+
+                Text(
+                    "+",
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
 
         // ADD
         Button(
             onClick = onAdd,
-            colors = ButtonDefaults.buttonColors(containerColor = BlueButton),
-            shape = RoundedCornerShape(12.dp)
+            modifier = Modifier.weight(0.25f),
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = BlueButton
+            )
         ) {
-            Text("Add")
+
+            Text(
+                "Add",
+                fontWeight = FontWeight.Bold
+            )
         }
 
         // CART
         Button(
             onClick = onCart,
-            modifier = Modifier.size(56.dp),
+            modifier = Modifier
+                .weight(0.15f)
+                .aspectRatio(1f),
             contentPadding = PaddingValues(0.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = WhiteText),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = WhiteText
+            ),
             shape = RoundedCornerShape(12.dp)
         ) {
+
             Image(
                 painter = painterResource(
-                    id = if (cartIsEmpty)
+                    if (cartIsEmpty)
                         R.drawable.empty_cart
                     else
                         R.drawable.full_cart
