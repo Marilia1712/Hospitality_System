@@ -2,13 +2,19 @@ package com.example.waiterstudy.navigation
 
 sealed class AppScreen(val route: String) {
 
-    data object TableSelection : AppScreen("table_selection")
+    object Setup : AppScreen("setup")
 
-    data object ItemSelection : AppScreen("item_selection")
+    object Start : AppScreen("start")
 
-    data object Confirmation : AppScreen("confirmation")
+    object TableSelection : AppScreen("table_selection")
 
-    data object Error : AppScreen("error")
+    object ItemSelection : AppScreen("item_selection")
 
-    data object Success : AppScreen("success")
+    object Confirmation : AppScreen("confirmation")
+
+    object Error : AppScreen("error")
+
+    object Success : AppScreen("success")
+
+    object Results : AppScreen("results")
 }

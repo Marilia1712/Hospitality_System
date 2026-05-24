@@ -19,14 +19,16 @@ import com.example.waiterstudy.ui.theme.DarkText
 import com.example.waiterstudy.ui.theme.WhiteText
 import com.example.waiterstudy.utils.OrderMatcher
 import com.example.waiterstudy.viewmodel.OrderViewModel
+import com.example.waiterstudy.viewmodel.ExperimentViewModel
 
 @Composable
 fun ConfirmationScreen(
     navController: NavController,
-    viewModel: OrderViewModel
+    orderViewModel: OrderViewModel,
+    experimentViewModel: ExperimentViewModel
 ) {
 
-    val cart = viewModel.cart
+    val cart = orderViewModel.cart
 
     Column(
         modifier = Modifier
@@ -48,7 +50,7 @@ fun ConfirmationScreen(
         )
 
         Text(
-            text = "Table ${viewModel.selectedTable}",
+            text = "Table ${orderViewModel.selectedTable}",
             style = MaterialTheme.typography.titleMedium,
             color = DarkText,
             modifier = Modifier.fillMaxWidth(),
@@ -61,7 +63,7 @@ fun ConfirmationScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),   // THIS is the key
+                .weight(1f),
             contentAlignment = Alignment.Center
         ) {
 
@@ -100,7 +102,7 @@ fun ConfirmationScreen(
                             Button(onClick = {
                                 if (quantity > 0) {
                                     quantity--
-                                    viewModel.updateItem(item, quantity)
+                                    orderViewModel.updateItem(item, quantity)
                                 }
                             }) {
                                 Text("-")
@@ -115,7 +117,7 @@ fun ConfirmationScreen(
 
                             Button(onClick = {
                                 quantity++
-                                viewModel.updateItem(item, quantity)
+                                orderViewModel.updateItem(item, quantity)
                             }) {
                                 Text("+")
                             }
@@ -127,22 +129,34 @@ fun ConfirmationScreen(
 
         // BOTTOM BANNER
         Banner3(
-            onBack = { navController.popBackStack() },
+            onBack = {
+                navController.popBackStack()
+            },
             onSend = {
 
                 val isCorrect = OrderMatcher.isOrderCorrect(
-                    tableNumber = viewModel.selectedTable,
+                    tableNumber = orderViewModel.selectedTable,
                     currentOrder = cart
                 )
 
-                if (isCorrect) {
-                    navController.navigate(AppScreen.Success.route)
-                } else {
+                if (!isCorrect) {
+                    experimentViewModel.mistakes++
                     navController.navigate(AppScreen.Error.route)
+                } else {
+
+                    experimentViewModel.registerCompletedOrder()
+
+                    val finished =
+                        experimentViewModel.completedOrders >= experimentViewModel.totalOrdersInRun
+
+                    if (finished) {
+                        experimentViewModel.runEndTime = System.currentTimeMillis()
+                        navController.navigate(AppScreen.Results.route) { popUpTo(0) }
+                    } else {
+                        navController.navigate(AppScreen.Success.route)
+                    }
                 }
             }
         )
     }
-
-
 }

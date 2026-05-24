@@ -5,57 +5,86 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.waiterstudy.viewmodel.OrderViewModel
+
+import com.example.waiterstudy.ui.screens.SetupScreen
+import com.example.waiterstudy.ui.screens.StartScreen
 import com.example.waiterstudy.ui.screens.TableSelectionScreen
 import com.example.waiterstudy.ui.screens.ItemSelectionScreen
 import com.example.waiterstudy.ui.screens.ConfirmationScreen
 import com.example.waiterstudy.ui.screens.ErrorScreen
 import com.example.waiterstudy.ui.screens.SuccessScreen
+import com.example.waiterstudy.ui.screens.ResultsScreen
 
+import com.example.waiterstudy.viewmodel.OrderViewModel
+import com.example.waiterstudy.viewmodel.ExperimentViewModel
 
 @Composable
 fun NavGraph() {
 
     val navController = rememberNavController()
-    val viewModel: OrderViewModel = viewModel()
+    // VIEWMODELS (single shared instances across screens)
+    val orderViewModel: OrderViewModel = viewModel()
+    val experimentViewModel: ExperimentViewModel = viewModel()
 
     NavHost(
         navController = navController,
-        startDestination = AppScreen.TableSelection.route
+        startDestination = AppScreen.Setup.route
     ) {
+
+        composable(AppScreen.Setup.route) {
+            SetupScreen(
+                navController = navController,
+                experimentViewModel = experimentViewModel
+            )
+        }
+
+        composable(AppScreen.Start.route) {
+            StartScreen(
+                navController = navController,
+                experimentViewModel = experimentViewModel
+            )
+        }
 
         composable(AppScreen.TableSelection.route) {
             TableSelectionScreen(
                 navController = navController,
-                viewModel = viewModel
+                viewModel = orderViewModel
             )
         }
 
         composable(AppScreen.ItemSelection.route) {
             ItemSelectionScreen(
                 navController = navController,
-                viewModel = viewModel
+                viewModel = orderViewModel
             )
         }
 
         composable(AppScreen.Confirmation.route) {
             ConfirmationScreen(
                 navController = navController,
-                viewModel = viewModel
+                orderViewModel = orderViewModel,
+                experimentViewModel = experimentViewModel
             )
         }
 
         composable(AppScreen.Error.route) {
             ErrorScreen(
                 navController = navController,
-                viewModel = viewModel
+                viewModel = orderViewModel
             )
         }
 
         composable(AppScreen.Success.route) {
             SuccessScreen(
                 navController = navController,
-                viewModel = viewModel
+                viewModel = orderViewModel
+            )
+        }
+
+        composable(AppScreen.Results.route) {
+            ResultsScreen(
+                navController = navController,
+                experimentViewModel = experimentViewModel
             )
         }
     }

@@ -6,32 +6,23 @@ import com.example.waiterstudy.data.Item
 
 class OrderViewModel : ViewModel() {
 
+    val cart = mutableStateMapOf<Item, Int>()
     var selectedTable = 0
 
-    val cart = mutableStateMapOf<Item, Int>()
-
-    fun addItem(
-        item: Item,
-        quantity: Int
-    ) {
-
+    fun addItem(item: Item, quantity: Int) {
         if (quantity <= 0) return
-
-        cart[item] = cart.getOrDefault(item, 0) + quantity
-    }
-
-    fun clearOrder() {
-
-        selectedTable = 0
-        cart.clear()
+        cart[item] = quantity
     }
 
     fun updateItem(item: Item, quantity: Int) {
-
         if (quantity <= 0) {
             cart.remove(item)
         } else {
             cart[item] = quantity
         }
+    }
+
+    fun clear() {
+        cart.clear()
     }
 }
