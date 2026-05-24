@@ -17,7 +17,7 @@ class OrderViewModel : ViewModel() {
 
         if (quantity <= 0) return
 
-        cart[item] = quantity
+        cart[item] = cart.getOrDefault(item, 0) + quantity
     }
 
     fun clearOrder() {
