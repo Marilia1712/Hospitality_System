@@ -13,15 +13,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.waiterstudy.ui.components.Banner4
 import com.example.waiterstudy.ui.theme.*
+import com.example.waiterstudy.viewmodel.ExperimentViewModel
 import com.example.waiterstudy.viewmodel.OrderViewModel
 
 @Composable
 fun ErrorScreen(
     navController: NavController,
-    viewModel: OrderViewModel
+    viewModel: OrderViewModel,
+    experimentViewModel: ExperimentViewModel
 ) {
 
     val cart = viewModel.cart
+    val layout = experimentViewModel.layout
 
     Column(
         modifier = Modifier
@@ -48,6 +51,15 @@ fun ErrorScreen(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
+
+        if(layout=="TOP_BANNER"){
+            Banner4(
+                onBack = {
+                    navController.popBackStack()
+                },
+                onSend = { }
+            )
+        }
 
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -82,11 +94,13 @@ fun ErrorScreen(
 
 
         //BOTTOM BANNER
-        Banner4(
-            onBack = {
-                navController.popBackStack()
-            },
-            onSend = { }
-        )
+        if(layout=="BOTTOM_BANNER"){
+            Banner4(
+                onBack = {
+                    navController.popBackStack()
+                },
+                onSend = { }
+            )
+        }
     }
 }

@@ -12,7 +12,7 @@ class ExperimentViewModel : ViewModel() {
 
     var layout = "BOTTOM"
 
-    var totalOrdersInRun = 4
+    var totalOrdersInRun = 1
     var completedOrders = 0
 
     var runStartTime = 0L

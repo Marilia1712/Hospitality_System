@@ -17,12 +17,12 @@ import com.example.waiterstudy.ui.screens.ResultsScreen
 
 import com.example.waiterstudy.viewmodel.OrderViewModel
 import com.example.waiterstudy.viewmodel.ExperimentViewModel
+import kotlin.math.exp
 
 @Composable
 fun NavGraph() {
 
     val navController = rememberNavController()
-    // VIEWMODELS (single shared instances across screens)
     val orderViewModel: OrderViewModel = viewModel()
     val experimentViewModel: ExperimentViewModel = viewModel()
 
@@ -48,14 +48,16 @@ fun NavGraph() {
         composable(AppScreen.TableSelection.route) {
             TableSelectionScreen(
                 navController = navController,
-                viewModel = orderViewModel
+                viewModel = orderViewModel,
+                experimentViewModel = experimentViewModel
             )
         }
 
         composable(AppScreen.ItemSelection.route) {
             ItemSelectionScreen(
                 navController = navController,
-                viewModel = orderViewModel
+                viewModel = orderViewModel,
+                experimentViewModel = experimentViewModel
             )
         }
 
@@ -70,7 +72,8 @@ fun NavGraph() {
         composable(AppScreen.Error.route) {
             ErrorScreen(
                 navController = navController,
-                viewModel = orderViewModel
+                viewModel = orderViewModel,
+                experimentViewModel = experimentViewModel
             )
         }
 

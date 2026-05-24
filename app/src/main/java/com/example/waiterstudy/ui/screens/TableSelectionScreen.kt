@@ -18,6 +18,7 @@ import com.example.waiterstudy.navigation.AppScreen
 import com.example.waiterstudy.ui.theme.BackgroundGray
 import com.example.waiterstudy.ui.theme.DarkButton
 import com.example.waiterstudy.viewmodel.OrderViewModel
+import com.example.waiterstudy.viewmodel.ExperimentViewModel
 import com.example.waiterstudy.ui.theme.WhiteText
 import com.example.waiterstudy.ui.theme.DarkText
 import androidx.compose.ui.text.style.TextAlign
@@ -27,11 +28,13 @@ import com.example.waiterstudy.ui.theme.BlueButton
 @Composable
 fun TableSelectionScreen(
     navController: NavController,
-    viewModel: OrderViewModel
+    viewModel: OrderViewModel,
+    experimentViewModel: ExperimentViewModel
 ) {
 
     val tables = (1..9).toList()
     var selectedTable by remember { mutableStateOf<Int?>(null) }
+    val layout = experimentViewModel.layout
 
     Column(
         modifier = Modifier
@@ -50,6 +53,18 @@ fun TableSelectionScreen(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
+
+        if (layout == "TOP_BANNER") {
+            Banner1(
+                selectedTable = selectedTable,
+                onEnter = {
+                    selectedTable?.let {
+                        viewModel.selectedTable = it
+                        navController.navigate(AppScreen.ItemSelection.route)
+                    }
+                }
+            )
+        }
 
         Box(
             modifier = Modifier.weight(1f),
@@ -89,15 +104,16 @@ fun TableSelectionScreen(
             }
         }
 
-        // BOTTOM BANNER
-        Banner1(
-            selectedTable = selectedTable,
-            onEnter = {
-                selectedTable?.let {
-                    viewModel.selectedTable = it
-                    navController.navigate(AppScreen.ItemSelection.route)
+        if (layout == "BOTTOM_BANNER") {
+            Banner1(
+                selectedTable = selectedTable,
+                onEnter = {
+                    selectedTable?.let {
+                        viewModel.selectedTable = it
+                        navController.navigate(AppScreen.ItemSelection.route)
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 }

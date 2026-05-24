@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.waiterstudy.navigation.AppScreen
@@ -23,7 +24,10 @@ fun SetupScreen(
 
     val runId = experimentViewModel.runId
 
-    var selectedLayout by remember { mutableStateOf("BOTTOM") }
+    // IMPORTANT: sync with experiment state
+    var selectedLayout by remember {
+        mutableStateOf(experimentViewModel.layout)
+    }
 
     val layouts = listOf("TOP_BANNER", "BOTTOM_BANNER")
 
@@ -44,7 +48,7 @@ fun SetupScreen(
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.fillMaxWidth(),
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -53,7 +57,7 @@ fun SetupScreen(
                 text = "Run $runId",
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.fillMaxWidth(),
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                textAlign = TextAlign.Center,
                 color = DarkText,
                 fontWeight = FontWeight.Bold
             )
@@ -102,7 +106,6 @@ fun SetupScreen(
                 experimentViewModel.runId = runId + 1
 
                 navController.navigate(AppScreen.Start.route)
-
             },
             modifier = Modifier
                 .fillMaxWidth()

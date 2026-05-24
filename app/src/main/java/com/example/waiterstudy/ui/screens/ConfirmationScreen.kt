@@ -29,6 +29,7 @@ fun ConfirmationScreen(
 ) {
 
     val cart = orderViewModel.cart
+    val layout = experimentViewModel.layout
 
     Column(
         modifier = Modifier
@@ -56,6 +57,39 @@ fun ConfirmationScreen(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
+
+        if(layout=="TOP_BANNER"){
+            Banner3(
+                onBack = {
+                    navController.popBackStack()
+                },
+                onSend = {
+
+                    val isCorrect = OrderMatcher.isOrderCorrect(
+                        tableNumber = orderViewModel.selectedTable,
+                        currentOrder = cart
+                    )
+
+                    if (!isCorrect) {
+                        experimentViewModel.mistakes++
+                        navController.navigate(AppScreen.Error.route)
+                    } else {
+
+                        experimentViewModel.registerCompletedOrder()
+
+                        val finished =
+                            experimentViewModel.completedOrders >= experimentViewModel.totalOrdersInRun
+
+                        if (finished) {
+                            experimentViewModel.runEndTime = System.currentTimeMillis()
+                            navController.navigate(AppScreen.Results.route) { popUpTo(0) }
+                        } else {
+                            navController.navigate(AppScreen.Success.route)
+                        }
+                    }
+                }
+            )
+        }
 
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -127,36 +161,37 @@ fun ConfirmationScreen(
             }
         }
 
-        // BOTTOM BANNER
-        Banner3(
-            onBack = {
-                navController.popBackStack()
-            },
-            onSend = {
+        if(layout=="BOTTOM_BANNER"){
+            Banner3(
+                onBack = {
+                    navController.popBackStack()
+                },
+                onSend = {
 
-                val isCorrect = OrderMatcher.isOrderCorrect(
-                    tableNumber = orderViewModel.selectedTable,
-                    currentOrder = cart
-                )
+                    val isCorrect = OrderMatcher.isOrderCorrect(
+                        tableNumber = orderViewModel.selectedTable,
+                        currentOrder = cart
+                    )
 
-                if (!isCorrect) {
-                    experimentViewModel.mistakes++
-                    navController.navigate(AppScreen.Error.route)
-                } else {
-
-                    experimentViewModel.registerCompletedOrder()
-
-                    val finished =
-                        experimentViewModel.completedOrders >= experimentViewModel.totalOrdersInRun
-
-                    if (finished) {
-                        experimentViewModel.runEndTime = System.currentTimeMillis()
-                        navController.navigate(AppScreen.Results.route) { popUpTo(0) }
+                    if (!isCorrect) {
+                        experimentViewModel.mistakes++
+                        navController.navigate(AppScreen.Error.route)
                     } else {
-                        navController.navigate(AppScreen.Success.route)
+
+                        experimentViewModel.registerCompletedOrder()
+
+                        val finished =
+                            experimentViewModel.completedOrders >= experimentViewModel.totalOrdersInRun
+
+                        if (finished) {
+                            experimentViewModel.runEndTime = System.currentTimeMillis()
+                            navController.navigate(AppScreen.Results.route) { popUpTo(0) }
+                        } else {
+                            navController.navigate(AppScreen.Success.route)
+                        }
                     }
                 }
-            }
-        )
+            )
+        }
     }
 }
