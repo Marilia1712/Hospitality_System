@@ -17,13 +17,15 @@ import com.example.waiterstudy.ui.theme.BackgroundGray
 import com.example.waiterstudy.ui.theme.DarkButton
 import com.example.waiterstudy.ui.theme.DarkText
 import com.example.waiterstudy.ui.theme.WhiteText
+import com.example.waiterstudy.userData.UserData
 import com.example.waiterstudy.utils.OrderMatcher
 import com.example.waiterstudy.viewmodel.OrderViewModel
 
 @Composable
 fun ConfirmationScreen(
     navController: NavController,
-    viewModel: OrderViewModel
+    viewModel: OrderViewModel,
+    userData: UserData
 ) {
 
     val cart = viewModel.cart
@@ -137,6 +139,14 @@ fun ConfirmationScreen(
 
                 if (isCorrect) {
                     navController.navigate(AppScreen.Success.route)
+                    userData.addOrderData()
+                    if (!userData.lastOne()){
+                        navController.navigate(AppScreen.Success.route)
+                    }
+                    else {
+                        userData.addSubject()
+                        navController.navigate(AppScreen.Finish.route)
+                    }
                 } else {
                     navController.navigate(AppScreen.Error.route)
                 }

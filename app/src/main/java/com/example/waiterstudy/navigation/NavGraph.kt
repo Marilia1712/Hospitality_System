@@ -11,17 +11,20 @@ import com.example.waiterstudy.ui.screens.ItemSelectionScreen
 import com.example.waiterstudy.ui.screens.ConfirmationScreen
 import com.example.waiterstudy.ui.screens.ErrorScreen
 import com.example.waiterstudy.ui.screens.SuccessScreen
-
+import com.example.waiterstudy.ui.screens.StartScreen
+import com.example.waiterstudy.ui.screens.FinishScreen
+import com.example.waiterstudy.userData.UserData
 
 @Composable
 fun NavGraph() {
 
     val navController = rememberNavController()
     val viewModel: OrderViewModel = viewModel()
+    val userDataViewModel: UserData = viewModel()
 
     NavHost(
         navController = navController,
-        startDestination = AppScreen.TableSelection.route
+        startDestination = AppScreen.Start.route
     ) {
 
         composable(AppScreen.TableSelection.route) {
@@ -41,7 +44,8 @@ fun NavGraph() {
         composable(AppScreen.Confirmation.route) {
             ConfirmationScreen(
                 navController = navController,
-                viewModel = viewModel
+                viewModel = viewModel,
+                userData = userDataViewModel
             )
         }
 
@@ -54,6 +58,20 @@ fun NavGraph() {
 
         composable(AppScreen.Success.route) {
             SuccessScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
+        }
+
+        composable(AppScreen.Start.route) {
+            StartScreen(
+                navController = navController,
+                userData = userDataViewModel
+            )
+        }
+
+        composable(AppScreen.Finish.route) {
+            FinishScreen(
                 navController = navController,
                 viewModel = viewModel
             )

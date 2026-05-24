@@ -11,4 +11,8 @@ sealed class AppScreen(val route: String) {
     data object Error : AppScreen("error")
 
     data object Success : AppScreen("success")
+
+    data object Start : AppScreen("start")
+
+    data object Finish : AppScreen("finish")
 }
