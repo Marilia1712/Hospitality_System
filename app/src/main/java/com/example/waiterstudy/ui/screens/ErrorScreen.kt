@@ -13,15 +13,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.waiterstudy.ui.components.Banner4
 import com.example.waiterstudy.ui.theme.*
+import com.example.waiterstudy.userData.UserData
 import com.example.waiterstudy.viewmodel.OrderViewModel
 
 @Composable
 fun ErrorScreen(
     navController: NavController,
-    viewModel: OrderViewModel
+    viewModel: OrderViewModel,
+    userData: UserData
 ) {
 
     val cart = viewModel.cart
+    val layout = userData.subject.layout
 
     Column(
         modifier = Modifier
@@ -33,7 +36,7 @@ fun ErrorScreen(
         Spacer(modifier = Modifier.height(72.dp))
 
         Text(
-            text = "Confirm order",
+            text = "Wrong order",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             color = DarkText,
@@ -49,9 +52,19 @@ fun ErrorScreen(
             textAlign = TextAlign.Center
         )
 
+        if (layout == "TOP_BANNER") {
+            Banner4(
+                onBack = {
+                    navController.popBackStack()
+                },
+                onSend = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
         Spacer(modifier = Modifier.height(20.dp))
 
-        // ORDER LIST
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -61,10 +74,10 @@ fun ErrorScreen(
         ) {
 
             Text(
-                text = "Incorrect order. Try again.",
+                text = "Incorrect order. Please try again.",
                 color = WhiteText,
                 modifier = Modifier
-                    .background(ErrorRed, shape= RoundedCornerShape(12.dp))
+                    .background(ErrorRed, shape = RoundedCornerShape(12.dp))
                     .padding(12.dp),
                 fontWeight = FontWeight.Bold
             )
@@ -80,13 +93,15 @@ fun ErrorScreen(
             }
         }
 
-
-        //BOTTOM BANNER
-        Banner4(
-            onBack = {
-                navController.popBackStack()
-            },
-            onSend = { }
-        )
+        if (layout == "BOTTOM_BANNER") {
+            Banner4(
+                onBack = {
+                    navController.popBackStack()
+                },
+                onSend = {
+                    navController.popBackStack()
+                }
+            )
+        }
     }
 }

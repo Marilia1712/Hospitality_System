@@ -26,3 +26,5 @@ val BlueButtonDisabled = Color(0x774A90E2)
 val ErrorRed = Color(0x9FB3261E)
 
 val SuccessGreen = Color(0xFF2A6C2D)
+
+val Yellow = Color(0xFFFFC107)

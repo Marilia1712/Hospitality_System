@@ -23,15 +23,19 @@ import com.example.waiterstudy.ui.theme.DarkText
 import androidx.compose.ui.text.style.TextAlign
 import com.example.waiterstudy.ui.components.Banner1
 import com.example.waiterstudy.ui.theme.BlueButton
+import com.example.waiterstudy.userData.UserData
 
 @Composable
 fun TableSelectionScreen(
     navController: NavController,
-    viewModel: OrderViewModel
+    viewModel: OrderViewModel,
+    userData: UserData
 ) {
 
     val tables = (1..9).toList()
     var selectedTable by remember { mutableStateOf<Int?>(null) }
+
+    val layout = userData.subject.layout
 
     Column(
         modifier = Modifier
@@ -50,6 +54,18 @@ fun TableSelectionScreen(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
+
+        if (layout == "TOP_BANNER") {
+            Banner1(
+                selectedTable = selectedTable,
+                onEnter = {
+                    selectedTable?.let {
+                        viewModel.selectedTable = it
+                        navController.navigate(AppScreen.ItemSelection.route)
+                    }
+                }
+            )
+        }
 
         Box(
             modifier = Modifier.weight(1f),
@@ -89,15 +105,16 @@ fun TableSelectionScreen(
             }
         }
 
-        // BOTTOM BANNER
-        Banner1(
-            selectedTable = selectedTable,
-            onEnter = {
-                selectedTable?.let {
-                    viewModel.selectedTable = it
-                    navController.navigate(AppScreen.ItemSelection.route)
+        if (layout == "BOTTOM_BANNER") {
+            Banner1(
+                selectedTable = selectedTable,
+                onEnter = {
+                    selectedTable?.let {
+                        viewModel.selectedTable = it
+                        navController.navigate(AppScreen.ItemSelection.route)
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 }

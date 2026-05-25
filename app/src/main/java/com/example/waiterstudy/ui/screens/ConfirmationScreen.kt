@@ -10,6 +10,7 @@ import com.example.waiterstudy.navigation.AppScreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.example.waiterstudy.ui.components.Banner3
@@ -28,7 +29,35 @@ fun ConfirmationScreen(
     userData: UserData
 ) {
 
+    val context = LocalContext.current
     val cart = viewModel.cart
+    val layout = userData.subject.layout
+
+    fun sendOrder() {
+
+        val isCorrect = OrderMatcher.isOrderCorrect(
+            tableNumber = viewModel.selectedTable,
+            currentOrder = cart,
+            userData = userData
+        )
+
+        if (isCorrect) {
+            userData.endTimeStamp = System.currentTimeMillis()
+            userData.addOrderData()
+            userData.exportOrder(context)
+            userData.mistakes = 0
+            if (!userData.lastOne()){
+                navController.navigate(AppScreen.Success.route)
+            }
+            else {
+                userData.addSubject()
+                navController.navigate(AppScreen.Results.route)
+            }
+        } else {
+            userData.mistakes += 1
+            navController.navigate(AppScreen.Error.route)
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -57,32 +86,39 @@ fun ConfirmationScreen(
             textAlign = TextAlign.Center
         )
 
+        if (layout == "TOP_BANNER") {
+            Banner3(
+                onBack = { navController.popBackStack() },
+                onSend = { sendOrder() }
+            )
+        }
+
         Spacer(modifier = Modifier.height(20.dp))
 
-        // ORDER RECAP AREA
+        // CART + EDITING UI
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),   // THIS is the key
+                .weight(1f),
             contentAlignment = Alignment.Center
         ) {
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(DarkButton, shape = RoundedCornerShape(12.dp))
+                    .background(DarkButton, RoundedCornerShape(12.dp))
                     .padding(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
                 cart.forEach { (item, qty) ->
 
-                    var quantity by remember { mutableStateOf(qty) }
+                    var quantity by remember(item) { mutableStateOf(qty) }
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
 
                         Text(
@@ -93,32 +129,49 @@ fun ConfirmationScreen(
                         )
 
                         Row(
+                            verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
                                 .background(WhiteText, shape = RoundedCornerShape(12.dp))
-                                .padding(horizontal = 8.dp, vertical = 4.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                                .padding(horizontal = 6.dp, vertical = 4.dp)
                         ) {
 
-                            Button(onClick = {
-                                if (quantity > 0) {
-                                    quantity--
-                                    viewModel.updateItem(item, quantity)
-                                }
-                            }) {
+                            Button(
+                                onClick = {
+                                    if (quantity > 0) {
+                                        quantity--
+                                        viewModel.updateItem(item, quantity)
+                                    }
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = DarkButton,
+                                    contentColor = WhiteText
+                                ),
+                                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+                            ) {
                                 Text("-")
                             }
 
+                            Spacer(modifier = Modifier.width(8.dp))
+
                             Text(
-                                text = "$quantity",
+                                text = quantity.toString(),
                                 color = DarkText,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(horizontal = 12.dp)
+                                fontWeight = FontWeight.Bold
                             )
 
-                            Button(onClick = {
-                                quantity++
-                                viewModel.updateItem(item, quantity)
-                            }) {
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Button(
+                                onClick = {
+                                    quantity++
+                                    viewModel.updateItem(item, quantity)
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = DarkButton,
+                                    contentColor = WhiteText
+                                ),
+                                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+                            ) {
                                 Text("+")
                             }
                         }
@@ -128,31 +181,11 @@ fun ConfirmationScreen(
         }
 
         // BOTTOM BANNER
-        Banner3(
-            onBack = { navController.popBackStack() },
-            onSend = {
-
-                val isCorrect = OrderMatcher.isOrderCorrect(
-                    tableNumber = viewModel.selectedTable,
-                    currentOrder = cart
-                )
-
-                if (isCorrect) {
-                    navController.navigate(AppScreen.Success.route)
-                    userData.addOrderData()
-                    if (!userData.lastOne()){
-                        navController.navigate(AppScreen.Success.route)
-                    }
-                    else {
-                        userData.addSubject()
-                        navController.navigate(AppScreen.Finish.route)
-                    }
-                } else {
-                    navController.navigate(AppScreen.Error.route)
-                }
-            }
-        )
+        if (layout == "BOTTOM_BANNER") {
+            Banner3(
+                onBack = { navController.popBackStack() },
+                onSend = { sendOrder() }
+            )
+        }
     }
-
-
 }
