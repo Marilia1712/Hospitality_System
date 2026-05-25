@@ -25,7 +25,6 @@ import com.example.waiterstudy.ui.theme.*
 import com.example.waiterstudy.viewmodel.OrderViewModel
 import com.example.waiterstudy.userData.UserData
 import com.example.waiterstudy.ui.components.Banner2
-import com.example.waiterstudy.userData.UserData
 
 @Composable
 fun ItemSelectionScreen(
