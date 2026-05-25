@@ -11,19 +11,22 @@ import com.example.waiterstudy.navigation.AppScreen
 import androidx.compose.foundation.background
 import com.example.waiterstudy.ui.theme.BackgroundGray
 import com.example.waiterstudy.ui.theme.SuccessGreen
+import com.example.waiterstudy.userData.UserData
 import com.example.waiterstudy.viewmodel.OrderViewModel
 import kotlinx.coroutines.delay
 
 @Composable
 fun SuccessScreen(
     navController: NavController,
-    viewModel: OrderViewModel
+    viewModel: OrderViewModel,
+    userData: UserData
 ) {
 
     LaunchedEffect(Unit) {
 
         delay(2000)
 
+        userData.startTimeStamp = System.currentTimeMillis()
         viewModel.cart.clear()
         viewModel.selectedTable = 0
 

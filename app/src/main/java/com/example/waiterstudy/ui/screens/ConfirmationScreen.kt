@@ -1,24 +1,26 @@
 package com.example.waiterstudy.ui.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-
 import com.example.waiterstudy.navigation.AppScreen
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import com.example.waiterstudy.ui.components.Banner3
-import com.example.waiterstudy.ui.theme.*
+import com.example.waiterstudy.ui.theme.BackgroundGray
+import com.example.waiterstudy.ui.theme.DarkButton
+import com.example.waiterstudy.ui.theme.DarkText
+import com.example.waiterstudy.ui.theme.WhiteText
 import com.example.waiterstudy.userData.UserData
 import com.example.waiterstudy.utils.OrderMatcher
 import com.example.waiterstudy.viewmodel.OrderViewModel
-import com.example.waiterstudy.data.Item
 
 @Composable
 fun ConfirmationScreen(
@@ -27,40 +29,33 @@ fun ConfirmationScreen(
     userData: UserData
 ) {
 
+    val context = LocalContext.current
     val cart = viewModel.cart
     val layout = userData.subject.layout
 
     fun sendOrder() {
 
-        val startTime = System.currentTimeMillis()
-
         val isCorrect = OrderMatcher.isOrderCorrect(
             tableNumber = viewModel.selectedTable,
-            currentOrder = cart
+            currentOrder = cart,
+            userData = userData
         )
 
-        val order = com.example.waiterstudy.userData.OrderData(
-            orderId = userData.subject.orders.size + 1,
-            startTimeStamp = startTime,
-            endTimeStamp = System.currentTimeMillis(),
-            mistakes = if (isCorrect) 0 else 1
-        )
-
-        userData.subject.orders.add(order)
-
-        if (!isCorrect) {
-            navController.navigate(AppScreen.Error.route)
-            return
-        }
-
-        val finished = userData.subject.orders.size >= 4
-
-        if (finished) {
-            navController.navigate(AppScreen.Results.route) {
-                popUpTo(0)
+        if (isCorrect) {
+            userData.endTimeStamp = System.currentTimeMillis()
+            userData.addOrderData()
+            userData.exportOrder(context)
+            userData.mistakes = 0
+            if (!userData.lastOne()){
+                navController.navigate(AppScreen.Success.route)
+            }
+            else {
+                userData.addSubject()
+                navController.navigate(AppScreen.Results.route)
             }
         } else {
-            navController.navigate(AppScreen.Success.route)
+            userData.mistakes += 1
+            navController.navigate(AppScreen.Error.route)
         }
     }
 
@@ -73,6 +68,7 @@ fun ConfirmationScreen(
 
         Spacer(modifier = Modifier.height(72.dp))
 
+        // HEADER
         Text(
             text = "Confirm order",
             style = MaterialTheme.typography.headlineMedium,
@@ -184,6 +180,7 @@ fun ConfirmationScreen(
             }
         }
 
+        // BOTTOM BANNER
         if (layout == "BOTTOM_BANNER") {
             Banner3(
                 onBack = { navController.popBackStack() },

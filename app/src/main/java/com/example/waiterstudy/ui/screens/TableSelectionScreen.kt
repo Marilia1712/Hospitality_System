@@ -13,13 +13,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
-
 import com.example.waiterstudy.navigation.AppScreen
-import com.example.waiterstudy.ui.components.Banner1
-import com.example.waiterstudy.ui.theme.*
+import com.example.waiterstudy.ui.theme.BackgroundGray
+import com.example.waiterstudy.ui.theme.DarkButton
 import com.example.waiterstudy.viewmodel.OrderViewModel
+import com.example.waiterstudy.ui.theme.WhiteText
+import com.example.waiterstudy.ui.theme.DarkText
+import androidx.compose.ui.text.style.TextAlign
+import com.example.waiterstudy.ui.components.Banner1
+import com.example.waiterstudy.ui.theme.BlueButton
 import com.example.waiterstudy.userData.UserData
 
 @Composable

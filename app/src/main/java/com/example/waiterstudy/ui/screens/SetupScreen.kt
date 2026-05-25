@@ -216,23 +216,8 @@ fun SetupScreen(
         Button(
 
             onClick = {
-
-                userData.newSubject(
-
-                    runId = runId,
-
-                    username =
-                        username,
-
-                    layout =
-                        selectedLayout
-
-                )
-
-                navController.navigate(
-                    AppScreen.Start.route
-                )
-
+                userData.newSubject(username, selectedLayout)
+                navController.navigate(AppScreen.Start.route)
             },
 
             enabled =

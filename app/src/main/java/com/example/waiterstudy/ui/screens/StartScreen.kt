@@ -75,7 +75,7 @@ fun StartScreen(
                         before new run starts
                         */
 
-                        userData.subject.orders.clear()
+                        userData.startTimeStamp = System.currentTimeMillis()
 
                         navController.navigate(
                             AppScreen.TableSelection.route
@@ -119,18 +119,6 @@ fun StartScreen(
             horizontalAlignment =
                 Alignment.CenterHorizontally
         ) {
-
-            Text(
-                text =
-                    "Run ${userData.subject.runId}",
-
-                style =
-                    MaterialTheme.typography.titleMedium,
-
-                fontWeight = FontWeight.Bold,
-
-                color = DarkText
-            )
 
             Text(
                 text =

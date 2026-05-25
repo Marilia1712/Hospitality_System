@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 import com.example.waiterstudy.navigation.AppScreen
-//import com.example.waiterstudy.storage.CsvExporter
 import com.example.waiterstudy.ui.theme.*
 import com.example.waiterstudy.userData.UserData
 
@@ -27,7 +26,7 @@ fun ResultsScreen(
 
     val totalTime =
         subject.orders.sumOf {
-            (it.endTimeStamp - it.startTimeStamp).toLong()
+            (it.endTimeStamp - it.startTimeStamp)
         }
 
     val totalMistakes =
@@ -58,7 +57,7 @@ fun ResultsScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Run ${subject.runId}",
+                text = "Run ${subject.subjectId}",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = DarkText,
@@ -90,8 +89,7 @@ fun ResultsScreen(
 
                 val ctx = navController.context
 
-                //CsvExporter.exportSubject(ctx, subject) //TODO: update with new CsvExporter
-                //CsvExporter.exportOrders(ctx, subject.orders)
+                userData.DownloadCsv(ctx)
 
                 userData.addSubject()
 

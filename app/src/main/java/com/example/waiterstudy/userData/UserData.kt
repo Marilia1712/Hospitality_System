@@ -1,26 +1,29 @@
 package com.example.waiterstudy.userData
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
-import com.example.waiterstudy.data.FakeOrders
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.example.waiterstudy.data.FakeOrders
+import java.io.File
+import android.os.Environment
 
 /*
 Core of the experiment backend
 */
 class UserData : ViewModel() {
-
-    // ALL COMPLETED RUNS
+    var orderId: Int = 0
+    var startTimeStamp: Long = 0
+    var endTimeStamp: Long = 0
     val subjects: MutableList<Subject> = mutableListOf()
-
     private val formatter =
-        SimpleDateFormat("MM-dd", Locale.getDefault())
+        SimpleDateFormat("MM-dd HH:mm", Locale.getDefault())
+    var mistakes: Int = 0
 
     // CURRENT RUN IN PROGRESS
     var subject = Subject(
-        runId = 0,
-        subjectUsername = "",
+        subjectId = "",
         layout = "",
         dateText = formatter.format(Date()),
         orders = mutableListOf()
@@ -39,50 +42,90 @@ class UserData : ViewModel() {
     /*
     Adds completed order to current run
     */
-    private var nextOrderId = 0
-
-    fun addOrderData() {
-
+    fun addOrderData(){
         val newOrder = OrderData(
-            orderId = nextOrderId++,
-            startTimeStamp = System.currentTimeMillis(),
-            endTimeStamp = 0L,
-            mistakes = 0
-
+            orderId = orderId,
+            startTimeStamp = startTimeStamp,
+            endTimeStamp = endTimeStamp,
+            mistakes = mistakes
         )
-
         subject.orders.add(newOrder)
-
     }
 
     /*
     Creates fresh run
     */
-    fun newSubject(
-        runId: Int,
-        username: String,
-        layout: String
-    ) {
-
+    fun newSubject(subjectId: String, layout: String){
         subject = Subject(
-
-            runId = runId,
-            subjectUsername = username,
+            subjectId = subjectId,
             layout = layout,
             dateText = formatter.format(Date()),
             orders = mutableListOf()
-
         )
-
     }
 
     /*
     Finalizes run
     */
-    fun addSubject() {
-
+    fun addSubject(){
         subjects.add(subject)
-
     }
 
+    fun exportOrder(
+        context: Context
+    ): File {
+
+        val file =
+            File(
+                context.filesDir,
+                "research_data.csv"
+            )
+
+        if (!file.exists()) {
+
+            file.appendText(
+                "subjectId,layout,readableTime,orderId,startTimeStamp,endTimeStamp,mistakes\n"
+            )
+        }
+
+        file.appendText(
+
+            "${subject.subjectId}," +
+            "${subject.layout}," +
+            "${subject.dateText}," +
+            "${orderId}," +
+            "${startTimeStamp}," +
+            "${endTimeStamp}," +
+            "${mistakes}\n"
+
+        )
+        return file
+    }
+
+    fun DownloadCsv(context: Context): File {
+
+        val internalFile = File(
+            context.filesDir,
+            "research_data.csv"
+        )
+
+        // Destination in Downloads
+        val downloadsDir =
+            Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS
+            )
+
+        val exportFile = File(
+            downloadsDir,
+            "research_data_${System.currentTimeMillis()}.csv"
+        )
+
+        // Copy contents
+        internalFile.copyTo(
+            target = exportFile,
+            overwrite = true
+        )
+
+        return exportFile
+    }
 }
