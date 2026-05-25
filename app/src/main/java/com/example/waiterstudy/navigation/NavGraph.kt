@@ -23,12 +23,11 @@ import kotlin.math.exp
 fun NavGraph() {
 
     val navController = rememberNavController()
-    val orderViewModel: OrderViewModel = viewModel()
-    val experimentViewModel: ExperimentViewModel = viewModel()
+    val viewModel: OrderViewModel = viewModel()
 
     NavHost(
         navController = navController,
-        startDestination = AppScreen.Setup.route
+        startDestination = AppScreen.TableSelection.route
     ) {
 
         composable(AppScreen.Setup.route) {
@@ -56,16 +55,15 @@ fun NavGraph() {
         composable(AppScreen.ItemSelection.route) {
             ItemSelectionScreen(
                 navController = navController,
-                viewModel = orderViewModel,
-                experimentViewModel = experimentViewModel
+                viewModel = viewModel
             )
         }
 
         composable(AppScreen.Confirmation.route) {
             ConfirmationScreen(
                 navController = navController,
-                orderViewModel = orderViewModel,
-                experimentViewModel = experimentViewModel
+                viewModel = viewModel,
+                userData = userDataViewModel
             )
         }
 

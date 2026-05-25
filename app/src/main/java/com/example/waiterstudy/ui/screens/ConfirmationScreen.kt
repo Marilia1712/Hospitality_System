@@ -17,19 +17,18 @@ import com.example.waiterstudy.ui.theme.BackgroundGray
 import com.example.waiterstudy.ui.theme.DarkButton
 import com.example.waiterstudy.ui.theme.DarkText
 import com.example.waiterstudy.ui.theme.WhiteText
+import com.example.waiterstudy.userData.UserData
 import com.example.waiterstudy.utils.OrderMatcher
 import com.example.waiterstudy.viewmodel.OrderViewModel
-import com.example.waiterstudy.viewmodel.ExperimentViewModel
 
 @Composable
 fun ConfirmationScreen(
     navController: NavController,
-    orderViewModel: OrderViewModel,
-    experimentViewModel: ExperimentViewModel
+    viewModel: OrderViewModel,
+    userData: UserData
 ) {
 
-    val cart = orderViewModel.cart
-    val layout = experimentViewModel.layout
+    val cart = viewModel.cart
 
     Column(
         modifier = Modifier
@@ -51,7 +50,7 @@ fun ConfirmationScreen(
         )
 
         Text(
-            text = "Table ${orderViewModel.selectedTable}",
+            text = "Table ${viewModel.selectedTable}",
             style = MaterialTheme.typography.titleMedium,
             color = DarkText,
             modifier = Modifier.fillMaxWidth(),
@@ -136,7 +135,7 @@ fun ConfirmationScreen(
                             Button(onClick = {
                                 if (quantity > 0) {
                                     quantity--
-                                    orderViewModel.updateItem(item, quantity)
+                                    viewModel.updateItem(item, quantity)
                                 }
                             }) {
                                 Text("-")
@@ -151,7 +150,7 @@ fun ConfirmationScreen(
 
                             Button(onClick = {
                                 quantity++
-                                orderViewModel.updateItem(item, quantity)
+                                viewModel.updateItem(item, quantity)
                             }) {
                                 Text("+")
                             }
@@ -194,4 +193,6 @@ fun ConfirmationScreen(
             )
         }
     }
+
+
 }
