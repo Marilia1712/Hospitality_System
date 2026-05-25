@@ -6,6 +6,9 @@ import java.util.Date
 import java.util.Locale
 import com.example.waiterstudy.data.FakeOrders
 
+/*
+Core of the experiment backend
+* */
 class UserData() : ViewModel() {
 
     val subjects: MutableList<Subject> = mutableListOf<Subject>()
