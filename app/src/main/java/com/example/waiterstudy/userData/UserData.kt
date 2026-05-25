@@ -39,18 +39,15 @@ class UserData : ViewModel() {
     /*
     Adds completed order to current run
     */
-    fun addOrderData(
-        orderId: Int,
-        startTimeStamp: Long,
-        endTimeStamp: Long,
-        mistakes: Int
-    ) {
+    private var nextOrderId = 0
+
+    fun addOrderData() {
 
         val newOrder = OrderData(
-            orderId = orderId,
-            startTimeStamp = startTimeStamp,
-            endTimeStamp = endTimeStamp,
-            mistakes = mistakes
+            orderId = nextOrderId++,
+            startTimeStamp = System.currentTimeMillis(),
+            endTimeStamp = 0L,
+            mistakes = 0
 
         )
 

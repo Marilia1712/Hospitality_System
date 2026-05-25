@@ -6,41 +6,35 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
-import com.example.waiterstudy.ui.screens.SetupScreen
-import com.example.waiterstudy.ui.screens.StartScreen
-import com.example.waiterstudy.ui.screens.TableSelectionScreen
-import com.example.waiterstudy.ui.screens.ItemSelectionScreen
-import com.example.waiterstudy.ui.screens.ConfirmationScreen
-import com.example.waiterstudy.ui.screens.ErrorScreen
-import com.example.waiterstudy.ui.screens.SuccessScreen
-import com.example.waiterstudy.ui.screens.ResultsScreen
+import com.example.waiterstudy.ui.screens.*
 
 import com.example.waiterstudy.viewmodel.OrderViewModel
-import com.example.waiterstudy.viewmodel.ExperimentViewModel
-import kotlin.math.exp
+import com.example.waiterstudy.userData.UserData
 
 @Composable
 fun NavGraph() {
 
     val navController = rememberNavController()
-    val viewModel: OrderViewModel = viewModel()
+
+    val orderViewModel: OrderViewModel = viewModel()
+    val userData: UserData = viewModel()
 
     NavHost(
         navController = navController,
-        startDestination = AppScreen.TableSelection.route
+        startDestination = AppScreen.Setup.route
     ) {
 
         composable(AppScreen.Setup.route) {
             SetupScreen(
                 navController = navController,
-                experimentViewModel = experimentViewModel
+                userData = userData
             )
         }
 
         composable(AppScreen.Start.route) {
             StartScreen(
                 navController = navController,
-                experimentViewModel = experimentViewModel
+                userData = userData
             )
         }
 
@@ -48,22 +42,23 @@ fun NavGraph() {
             TableSelectionScreen(
                 navController = navController,
                 viewModel = orderViewModel,
-                experimentViewModel = experimentViewModel
+                userData = userData
             )
         }
 
         composable(AppScreen.ItemSelection.route) {
             ItemSelectionScreen(
                 navController = navController,
-                viewModel = viewModel
+                viewModel = orderViewModel,
+                userData = userData
             )
         }
 
         composable(AppScreen.Confirmation.route) {
             ConfirmationScreen(
                 navController = navController,
-                viewModel = viewModel,
-                userData = userDataViewModel
+                viewModel = orderViewModel,
+                userData = userData
             )
         }
 
@@ -71,7 +66,7 @@ fun NavGraph() {
             ErrorScreen(
                 navController = navController,
                 viewModel = orderViewModel,
-                experimentViewModel = experimentViewModel
+                userData = userData
             )
         }
 
@@ -85,7 +80,7 @@ fun NavGraph() {
         composable(AppScreen.Results.route) {
             ResultsScreen(
                 navController = navController,
-                experimentViewModel = experimentViewModel
+                userData = userData
             )
         }
     }

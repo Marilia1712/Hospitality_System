@@ -16,15 +16,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+
 import com.example.waiterstudy.R
 import com.example.waiterstudy.navigation.AppScreen
 import com.example.waiterstudy.ui.theme.*
-import com.example.waiterstudy.viewmodel.ExperimentViewModel
+import com.example.waiterstudy.userData.UserData
 
 @Composable
 fun StartScreen(
     navController: NavController,
-    experimentViewModel: ExperimentViewModel
+    userData: UserData
 ) {
 
     Column(
@@ -32,11 +33,13 @@ fun StartScreen(
             .fillMaxSize()
             .background(BackgroundGray)
             .padding(16.dp),
+
         verticalArrangement = Arrangement.SpaceBetween,
+
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        // TOP TITLE
+        // HEADER
         Text(
             text = "Ready?",
             style = MaterialTheme.typography.headlineMedium,
@@ -46,11 +49,13 @@ fun StartScreen(
             textAlign = TextAlign.Center
         )
 
-        // CENTER PLAY AREA
+        // PLAY AREA
         Column(
+            modifier = Modifier.weight(1f),
+
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.weight(1f)
+
+            verticalArrangement = Arrangement.Center
         ) {
 
             Box(
@@ -58,61 +63,82 @@ fun StartScreen(
                     .size(140.dp)
                     .clip(RoundedCornerShape(16.dp))
                     .background(Yellow),
+
                 contentAlignment = Alignment.Center
             ) {
 
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .clickable {
+                    modifier = Modifier.clickable {
 
-                            // RUN STARTS HERE
-                            experimentViewModel.runStartTime =
-                                System.currentTimeMillis()          // RUN STARTS HERE
+                        /*
+                        Reset order tracking
+                        before new run starts
+                        */
 
-                            experimentViewModel.totalClicks = 0
-                            experimentViewModel.mistakes = 0
-                            experimentViewModel.completedOrders = 0
-                            experimentViewModel.orderResults.clear()
-                            experimentViewModel.eventLogs.clear()
+                        userData.subject.orders.clear()
 
-                            navController.navigate(AppScreen.TableSelection.route)
-                        }
+                        navController.navigate(
+                            AppScreen.TableSelection.route
+                        )
+
+                    },
+
+                    horizontalAlignment =
+                        Alignment.CenterHorizontally
                 ) {
 
                     Image(
-                        painter = painterResource(id = R.drawable.playbutton),
+                        painter = painterResource(
+                            id = R.drawable.playbutton
+                        ),
+
                         contentDescription = "Start",
+
                         modifier = Modifier.size(64.dp),
+
                         contentScale = ContentScale.Fit
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(
+                modifier = Modifier.height(8.dp)
+            )
 
             Text(
                 text = "Start",
+
                 fontWeight = FontWeight.Bold,
+
                 color = DarkText
             )
         }
 
-        // BOTTOM INFO
+        // RUN INFO
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment =
+                Alignment.CenterHorizontally
         ) {
 
             Text(
-                text = "Run ${experimentViewModel.runId}",
-                style = MaterialTheme.typography.titleMedium,
+                text =
+                    "Run ${userData.subject.runId}",
+
+                style =
+                    MaterialTheme.typography.titleMedium,
+
                 fontWeight = FontWeight.Bold,
+
                 color = DarkText
             )
 
             Text(
-                text = "Layout ${experimentViewModel.layout}",
-                style = MaterialTheme.typography.titleSmall,
+                text =
+                    "Layout ${userData.subject.layout}",
+
+                style =
+                    MaterialTheme.typography.titleSmall,
+
                 color = DarkText
             )
         }

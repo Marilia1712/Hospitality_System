@@ -11,4 +11,5 @@ data class Subject(
     val layout: String, //to easily keep track of what layout was being used during this run (e.g. bottom banner)
     val dateText: String, // e.g., "05-24"
     val orders: MutableList<OrderData> = mutableListOf()
+    //TODO: consider whether to keep timestamps also for the run as a whole and not just for the single orders
 )

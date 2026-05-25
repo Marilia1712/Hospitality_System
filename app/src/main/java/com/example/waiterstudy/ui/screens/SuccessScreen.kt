@@ -22,7 +22,7 @@ fun SuccessScreen(
 
     LaunchedEffect(Unit) {
 
-        delay(3000)
+        delay(2000)
 
         viewModel.cart.clear()
         viewModel.selectedTable = 0

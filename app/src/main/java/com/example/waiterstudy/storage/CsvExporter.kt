@@ -1,4 +1,4 @@
-package com.example.waiterstudy.storage
+/*package com.example.waiterstudy.storage
 
 import android.content.Context
 import com.example.waiterstudy.data.EventLog
@@ -122,4 +122,4 @@ object CsvExporter {
 
         return file
     }
-}
+}*/

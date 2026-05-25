@@ -11,18 +11,29 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+
 import com.example.waiterstudy.navigation.AppScreen
-import com.example.waiterstudy.storage.CsvExporter
+//import com.example.waiterstudy.storage.CsvExporter
 import com.example.waiterstudy.ui.theme.*
-import com.example.waiterstudy.viewmodel.ExperimentViewModel
+import com.example.waiterstudy.userData.UserData
 
 @Composable
 fun ResultsScreen(
     navController: NavController,
-    experimentViewModel: ExperimentViewModel
+    userData: UserData
 ) {
 
-    val run = experimentViewModel.buildRunData()
+    val subject = userData.subject
+
+    val totalTime =
+        subject.orders.sumOf {
+            (it.endTimeStamp - it.startTimeStamp).toLong()
+        }
+
+    val totalMistakes =
+        subject.orders.sumOf {
+            it.mistakes
+        }
 
     Column(
         modifier = Modifier
@@ -33,10 +44,7 @@ fun ResultsScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        // TOP SECTION
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
             Text(
                 text = "Results",
@@ -50,7 +58,7 @@ fun ResultsScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Run ${run.runId}",
+                text = "Run ${subject.runId}",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = DarkText,
@@ -59,56 +67,33 @@ fun ResultsScreen(
             )
         }
 
-        // CENTER STATS CARD
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(DarkButton, shape = RoundedCornerShape(16.dp))
+                .background(DarkButton, RoundedCornerShape(16.dp))
                 .padding(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Text(
-                text = "Layout: ${run.layout}",
-                color = WhiteText,
-                fontWeight = FontWeight.Bold
-            )
+            Text("Layout: ${subject.layout}", color = WhiteText)
+            Text("Date: ${subject.dateText}", color = WhiteText)
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Text(
-                text = "Time: ${run.totalDurationMs} ms",
-                color = WhiteText
-            )
-
-            Text(
-                text = "Clicks: ${run.totalClicks}",
-                color = WhiteText
-            )
-
-            Text(
-                text = "Orders: ${run.completedOrders}",
-                color = WhiteText
-            )
-
-            Text(
-                text = "Mistakes: ${run.mistakes}",
-                color = WhiteText
-            )
+            Text("Orders: ${subject.orders.size}", color = WhiteText)
+            Text("Time: ${totalTime} ms", color = WhiteText)
+            Text("Mistakes: $totalMistakes", color = WhiteText)
         }
 
-        // BOTTOM BUTTON
         Button(
             onClick = {
 
                 val ctx = navController.context
 
-                CsvExporter.exportRun(ctx, run)
-                CsvExporter.exportOrders(ctx, experimentViewModel.orderResults)
-                CsvExporter.exportEvents(ctx, experimentViewModel.eventLogs)
+                //CsvExporter.exportSubject(ctx, subject) //TODO: update with new CsvExporter
+                //CsvExporter.exportOrders(ctx, subject.orders)
 
-                experimentViewModel.resetRun()
-                experimentViewModel.runId += 1
+                userData.addSubject()
 
                 navController.navigate(AppScreen.Setup.route) {
                     popUpTo(0)
