@@ -25,7 +25,7 @@ fun SuccessScreen(
     LaunchedEffect(Unit) {
 
         delay(2000)
-
+        userData.orderNr++
         userData.startTimeStamp = System.currentTimeMillis()
         viewModel.cart.clear()
         viewModel.selectedTable = 0

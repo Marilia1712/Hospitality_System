@@ -76,6 +76,7 @@ fun StartScreen(
                         */
 
                         userData.startTimeStamp = System.currentTimeMillis()
+                        userData.orderNr = 1
 
                         navController.navigate(
                             AppScreen.TableSelection.route

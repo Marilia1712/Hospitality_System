@@ -13,6 +13,8 @@ import android.os.Environment
 Core of the experiment backend
 */
 class UserData : ViewModel() {
+
+    var orderNr: Int = 0
     var orderId: Int = 0
     var startTimeStamp: Long = 0
     var endTimeStamp: Long = 0
@@ -44,6 +46,7 @@ class UserData : ViewModel() {
     */
     fun addOrderData(){
         val newOrder = OrderData(
+            orderNr = orderNr,
             orderId = orderId,
             startTimeStamp = startTimeStamp,
             endTimeStamp = endTimeStamp,
@@ -84,7 +87,7 @@ class UserData : ViewModel() {
         if (!file.exists()) {
 
             file.appendText(
-                "subjectId,layout,readableTime,orderId,startTimeStamp,endTimeStamp,mistakes\n"
+                "subjectId,layout,readableTime,orderNr,orderId,startTimeStamp,endTimeStamp,mistakes\n"
             )
         }
 
@@ -93,6 +96,7 @@ class UserData : ViewModel() {
             "${subject.subjectId}," +
             "${subject.layout}," +
             "${subject.dateText}," +
+            "${orderNr}," +
             "${orderId}," +
             "${startTimeStamp}," +
             "${endTimeStamp}," +
