@@ -81,6 +81,7 @@ fun NavGraph() {
         composable(AppScreen.Results.route) {
             ResultsScreen(
                 navController = navController,
+                viewModel = orderViewModel,
                 userData = userData
             )
         }

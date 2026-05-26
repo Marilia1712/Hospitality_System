@@ -74,7 +74,10 @@ fun ItemSelectionScreen(
                 cartIsEmpty = viewModel.cart.isEmpty(),
                 selectedItemName = selectedItem?.name,
 
-                onBack = { navController.popBackStack() },
+                onBack = {
+                    navController.popBackStack()
+                    viewModel.cart.clear()
+                },
 
                 onAdd = {
                     selectedItem?.let { item ->
@@ -164,7 +167,10 @@ fun ItemSelectionScreen(
                 cartIsEmpty = viewModel.cart.isEmpty(),
                 selectedItemName = selectedItem?.name,
 
-                onBack = { navController.popBackStack() },
+                onBack = {
+                    navController.popBackStack()
+                    viewModel.cart.clear()
+                 },
 
                 onAdd = {
                     selectedItem?.let { item ->

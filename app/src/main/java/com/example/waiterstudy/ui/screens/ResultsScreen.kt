@@ -11,14 +11,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-
 import com.example.waiterstudy.navigation.AppScreen
 import com.example.waiterstudy.ui.theme.*
+import com.example.waiterstudy.viewmodel.OrderViewModel
 import com.example.waiterstudy.userData.UserData
 
 @Composable
 fun ResultsScreen(
     navController: NavController,
+    viewModel : OrderViewModel,
     userData: UserData
 ) {
 
@@ -91,7 +92,7 @@ fun ResultsScreen(
 
                 userData.DownloadCsv(ctx)
 
-                userData.addSubject()
+                viewModel.cart.clear()
 
                 navController.navigate(AppScreen.Setup.route) {
                     popUpTo(0)
