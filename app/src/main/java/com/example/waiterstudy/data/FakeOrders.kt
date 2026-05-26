@@ -28,6 +28,7 @@ object FakeOrders {
 
         // Table 7
         // 1x Wine, 2x Spritz
+        /*
         Order(
             orderId = 3,
             tableNumber = 7,
@@ -36,5 +37,6 @@ object FakeOrders {
                 MenuItems.items[7] to 2  // Spritz
             )
         )
+         */
     )
 }

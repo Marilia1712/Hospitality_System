@@ -41,6 +41,39 @@ fun ItemSelectionScreen(
     // NEW SOURCE OF TRUTH
     val layout = userData.subject.layout
 
+    val banner2 = @Composable {
+        Banner2(
+            quantity = quantity,
+            cartIsEmpty = viewModel.cart.isEmpty(),
+            selectedItemName = selectedItem?.name,
+
+            onBack = {
+                navController.popBackStack()
+                viewModel.cart.clear()
+            },
+
+            onAdd = {
+                selectedItem?.let { item ->
+
+                    val currentQty = viewModel.cart[item] ?: 0
+                    val newQty = currentQty + quantity
+
+                    viewModel.addItem(item, newQty)
+                }
+
+                selectedItem = null
+                quantity = 1
+            },
+
+            onCart = {
+                navController.navigate(AppScreen.Confirmation.route)
+            },
+
+            onIncrease = { quantity++ },
+            onDecrease = { if (quantity > 1) quantity-- }
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -68,38 +101,7 @@ fun ItemSelectionScreen(
         )
 
         // TOP BANNER
-        if (layout == "TOP_BANNER") {
-            Banner2(
-                quantity = quantity,
-                cartIsEmpty = viewModel.cart.isEmpty(),
-                selectedItemName = selectedItem?.name,
-
-                onBack = {
-                    navController.popBackStack()
-                    viewModel.cart.clear()
-                },
-
-                onAdd = {
-                    selectedItem?.let { item ->
-
-                        val currentQty = viewModel.cart[item] ?: 0
-                        val newQty = currentQty + quantity
-
-                        viewModel.addItem(item, newQty)
-                    }
-
-                    selectedItem = null
-                    quantity = 1
-                },
-
-                onCart = {
-                    navController.navigate(AppScreen.Confirmation.route)
-                },
-
-                onIncrease = { quantity++ },
-                onDecrease = { if (quantity > 1) quantity-- }
-            )
-        }
+        if (layout == "TOP_BANNER") {banner2()}
 
         Box(
             modifier = Modifier.weight(1f),
@@ -161,37 +163,6 @@ fun ItemSelectionScreen(
         }
 
         // BOTTOM BANNER
-        if (layout == "BOTTOM_BANNER") {
-            Banner2(
-                quantity = quantity,
-                cartIsEmpty = viewModel.cart.isEmpty(),
-                selectedItemName = selectedItem?.name,
-
-                onBack = {
-                    navController.popBackStack()
-                    viewModel.cart.clear()
-                 },
-
-                onAdd = {
-                    selectedItem?.let { item ->
-
-                        val currentQty = viewModel.cart[item] ?: 0
-                        val newQty = currentQty + quantity
-
-                        viewModel.addItem(item, newQty)
-                    }
-
-                    selectedItem = null
-                    quantity = 1
-                },
-
-                onCart = {
-                    navController.navigate(AppScreen.Confirmation.route)
-                },
-
-                onIncrease = { quantity++ },
-                onDecrease = { if (quantity > 1) quantity-- }
-            )
-        }
+        if (layout == "BOTTOM_BANNER") {banner2()}
     }
 }

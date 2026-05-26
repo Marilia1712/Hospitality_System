@@ -25,6 +25,16 @@ fun ErrorScreen(
 
     val cart = viewModel.cart
     val layout = userData.subject.layout
+    val banner4 = @Composable {
+        Banner4(
+            onBack = {
+                navController.popBackStack()
+            },
+            onSend = {
+                navController.popBackStack()
+            }
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -52,16 +62,7 @@ fun ErrorScreen(
             textAlign = TextAlign.Center
         )
 
-        if (layout == "TOP_BANNER") {
-            Banner4(
-                onBack = {
-                    navController.popBackStack()
-                },
-                onSend = {
-                    navController.popBackStack()
-                }
-            )
-        }
+        if (layout == "TOP_BANNER") {banner4()}
 
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -93,15 +94,6 @@ fun ErrorScreen(
             }
         }
 
-        if (layout == "BOTTOM_BANNER") {
-            Banner4(
-                onBack = {
-                    navController.popBackStack()
-                },
-                onSend = {
-                    navController.popBackStack()
-                }
-            )
-        }
+        if (layout == "BOTTOM_BANNER") {banner4()}
     }
 }

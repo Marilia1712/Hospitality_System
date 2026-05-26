@@ -33,30 +33,33 @@ fun ConfirmationScreen(
     val cart = viewModel.cart
     val layout = userData.subject.layout
 
-    fun sendOrder() {
-
-        val isCorrect = OrderMatcher.isOrderCorrect(
-            tableNumber = viewModel.selectedTable,
-            currentOrder = cart,
-            userData = userData
+    val banner3 = @Composable {
+        Banner3(
+            onBack = { navController.popBackStack() },
+            onSend = {
+                val isCorrect = OrderMatcher.isOrderCorrect(
+                tableNumber = viewModel.selectedTable,
+                currentOrder = cart,
+                userData = userData
+                )
+                if (isCorrect) {
+                    userData.endTimeStamp = System.currentTimeMillis()
+                    userData.addOrderData()
+                    userData.exportOrder(context)
+                    userData.mistakes = 0
+                    if (!userData.lastOne()){
+                        navController.navigate(AppScreen.Success.route)
+                    }
+                    else {
+                        userData.addSubject()
+                        navController.navigate(AppScreen.Results.route)
+                    }
+                } else {
+                    userData.mistakes += 1
+                    navController.navigate(AppScreen.Error.route)
+                }
+            }
         )
-
-        if (isCorrect) {
-            userData.endTimeStamp = System.currentTimeMillis()
-            userData.addOrderData()
-            userData.exportOrder(context)
-            userData.mistakes = 0
-            if (!userData.lastOne()){
-                navController.navigate(AppScreen.Success.route)
-            }
-            else {
-                userData.addSubject()
-                navController.navigate(AppScreen.Results.route)
-            }
-        } else {
-            userData.mistakes += 1
-            navController.navigate(AppScreen.Error.route)
-        }
     }
 
     Column(
@@ -86,12 +89,7 @@ fun ConfirmationScreen(
             textAlign = TextAlign.Center
         )
 
-        if (layout == "TOP_BANNER") {
-            Banner3(
-                onBack = { navController.popBackStack() },
-                onSend = { sendOrder() }
-            )
-        }
+        if (layout == "TOP_BANNER") {banner3()}
 
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -181,11 +179,6 @@ fun ConfirmationScreen(
         }
 
         // BOTTOM BANNER
-        if (layout == "BOTTOM_BANNER") {
-            Banner3(
-                onBack = { navController.popBackStack() },
-                onSend = { sendOrder() }
-            )
-        }
+        if (layout == "BOTTOM_BANNER") {banner3()}
     }
 }

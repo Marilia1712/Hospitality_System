@@ -37,6 +37,18 @@ fun TableSelectionScreen(
 
     val layout = userData.subject.layout
 
+    val banner1 = @Composable {
+        Banner1(
+            selectedTable = selectedTable,
+            onEnter = {
+                selectedTable?.let {
+                    viewModel.selectedTable = it
+                    navController.navigate(AppScreen.ItemSelection.route)
+                }
+            }
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -55,17 +67,7 @@ fun TableSelectionScreen(
             textAlign = TextAlign.Center
         )
 
-        if (layout == "TOP_BANNER") {
-            Banner1(
-                selectedTable = selectedTable,
-                onEnter = {
-                    selectedTable?.let {
-                        viewModel.selectedTable = it
-                        navController.navigate(AppScreen.ItemSelection.route)
-                    }
-                }
-            )
-        }
+        if (layout == "TOP_BANNER") {banner1()}
 
         Box(
             modifier = Modifier.weight(1f),
@@ -105,16 +107,6 @@ fun TableSelectionScreen(
             }
         }
 
-        if (layout == "BOTTOM_BANNER") {
-            Banner1(
-                selectedTable = selectedTable,
-                onEnter = {
-                    selectedTable?.let {
-                        viewModel.selectedTable = it
-                        navController.navigate(AppScreen.ItemSelection.route)
-                    }
-                }
-            )
-        }
+        if (layout == "BOTTOM_BANNER") {banner1()}
     }
 }

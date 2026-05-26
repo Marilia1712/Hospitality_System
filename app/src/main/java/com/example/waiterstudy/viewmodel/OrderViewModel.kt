@@ -3,6 +3,9 @@ package com.example.waiterstudy.viewmodel
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.ViewModel
 import com.example.waiterstudy.data.Item
+import com.example.waiterstudy.navigation.AppScreen
+import com.example.waiterstudy.utils.OrderMatcher
+import com.example.waiterstudy.userData.UserData
 
 class OrderViewModel : ViewModel() {
 
@@ -20,9 +23,5 @@ class OrderViewModel : ViewModel() {
         } else {
             cart[item] = quantity
         }
-    }
-
-    fun clear() {
-        cart.clear()
     }
 }
