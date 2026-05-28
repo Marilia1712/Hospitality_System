@@ -15,6 +15,7 @@ object FakeOrders {
             )
         ),
 
+        /*
         // Table 5
         // 2x Water, 1x Coffee
         Order(
@@ -28,7 +29,6 @@ object FakeOrders {
 
         // Table 7
         // 1x Wine, 2x Spritz
-        /*
         Order(
             orderId = 3,
             tableNumber = 7,

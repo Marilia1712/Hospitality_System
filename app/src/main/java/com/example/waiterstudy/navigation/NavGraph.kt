@@ -2,28 +2,24 @@ package com.example.waiterstudy.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-
 import com.example.waiterstudy.ui.screens.*
-
 import com.example.waiterstudy.viewmodel.OrderViewModel
 import com.example.waiterstudy.userData.UserData
 
 @Composable
-fun NavGraph() {
-
-    val navController = rememberNavController()
-
+fun NavGraph(
+    navController: NavHostController,
+    userData: UserData
+) {
     val orderViewModel: OrderViewModel = viewModel()
-    val userData: UserData = viewModel()
 
     NavHost(
         navController = navController,
         startDestination = AppScreen.Setup.route
     ) {
-
         composable(AppScreen.Setup.route) {
             SetupScreen(
                 navController = navController,

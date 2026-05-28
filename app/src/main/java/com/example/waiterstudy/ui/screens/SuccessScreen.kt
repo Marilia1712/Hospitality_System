@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.waiterstudy.navigation.AppScreen
 import androidx.compose.foundation.background
+import com.example.waiterstudy.ui.components.TrackedScreen
 import com.example.waiterstudy.ui.theme.BackgroundGray
 import com.example.waiterstudy.ui.theme.SuccessGreen
 import com.example.waiterstudy.userData.UserData
@@ -22,39 +23,42 @@ fun SuccessScreen(
     userData: UserData
 ) {
 
-    LaunchedEffect(Unit) {
+    TrackedScreen(screenName = "Succes", userData = userData) {
 
-        delay(2000)
-        userData.orderNr++
-        userData.startTimeStamp = System.currentTimeMillis()
-        viewModel.cart.clear()
-        viewModel.selectedTable = 0
+        LaunchedEffect(Unit) {
 
-        navController.navigate(AppScreen.TableSelection.route) {
-            popUpTo(0)
+            delay(2000)
+            userData.order.orderNr++
+            userData.order.startTimeStamp = System.currentTimeMillis()
+            viewModel.cart.clear()
+            viewModel.selectedTable = 0
+
+            navController.navigate(AppScreen.TableSelection.route) {
+                popUpTo(0)
+            }
         }
-    }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(BackgroundGray),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(BackgroundGray),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
-        Text(
-            text = "✔",
-            style = MaterialTheme.typography.displayLarge,
-            color = SuccessGreen
-        )
+            Text(
+                text = "✔",
+                style = MaterialTheme.typography.displayLarge,
+                color = SuccessGreen
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
-            text = "Order sent",
-            style = MaterialTheme.typography.headlineSmall,
-            color = SuccessGreen
-        )
+            Text(
+                text = "Order sent",
+                style = MaterialTheme.typography.headlineSmall,
+                color = SuccessGreen
+            )
+        }
     }
 }

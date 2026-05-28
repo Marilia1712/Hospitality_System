@@ -13,15 +13,9 @@ import android.os.Environment
 Core of the experiment backend
 */
 class UserData : ViewModel() {
-
-    var orderNr: Int = 0
-    var orderId: Int = 0
-    var startTimeStamp: Long = 0
-    var endTimeStamp: Long = 0
     val subjects: MutableList<Subject> = mutableListOf()
     private val formatter =
         SimpleDateFormat("MM-dd HH:mm", Locale.getDefault())
-    var mistakes: Int = 0
 
     // CURRENT RUN IN PROGRESS
     var subject = Subject(
@@ -29,6 +23,15 @@ class UserData : ViewModel() {
         layout = "",
         dateText = formatter.format(Date()),
         orders = mutableListOf()
+    )
+
+    var order = OrderData(
+        orderNr = 0,
+        orderId = 0,
+        startTimeStamp = 0,
+        endTimeStamp = 0,
+        mistakes = 0,
+        clicksPerScreen = mutableListOf()
     )
 
     /*
@@ -45,14 +48,7 @@ class UserData : ViewModel() {
     Adds completed order to current run
     */
     fun addOrderData(){
-        val newOrder = OrderData(
-            orderNr = orderNr,
-            orderId = orderId,
-            startTimeStamp = startTimeStamp,
-            endTimeStamp = endTimeStamp,
-            mistakes = mistakes
-        )
-        subject.orders.add(newOrder)
+        subject.orders.add(order)
     }
 
     /*
@@ -64,6 +60,14 @@ class UserData : ViewModel() {
             layout = layout,
             dateText = formatter.format(Date()),
             orders = mutableListOf()
+        )
+        order = OrderData(
+            orderNr = 0,
+            orderId = 0,
+            startTimeStamp = 0,
+            endTimeStamp = 0,
+            mistakes = 0,
+            clicksPerScreen = mutableListOf()
         )
     }
 
@@ -81,7 +85,7 @@ class UserData : ViewModel() {
         val file =
             File(
                 context.filesDir,
-                "research_data.csv"
+                "research_data.txt"
             )
 
         if (!file.exists()) {
@@ -96,21 +100,43 @@ class UserData : ViewModel() {
             "${subject.subjectId}," +
             "${subject.layout}," +
             "${subject.dateText}," +
-            "${orderNr}," +
-            "${orderId}," +
-            "${startTimeStamp}," +
-            "${endTimeStamp}," +
-            "${mistakes}\n"
+            "${order.orderNr}," +
+            "${order.orderId}," +
+            "${order.startTimeStamp}," +
+            "${order.endTimeStamp}," +
+            "${order.mistakes}\n"
 
         )
         return file
     }
 
-    fun DownloadCsv(context: Context): File {
+    fun exportClicks(context: Context): File {
+        val file = File(context.filesDir, "clicks.txt")
+
+        if (!file.exists()) {
+            file.appendText("subjectId,layout,readableTime,orderNr,orderId,screen,clicks\n")
+        }
+
+        order.clicksPerScreen.forEach { session ->
+            // This packs ALL clicks for this screen session into a single string cell
+            val formattedClicks = session.clicks.joinToString(separator = ";") { pair ->
+                "${pair.first}:${pair.second}"
+            }
+            val clicksCell = "\"[$formattedClicks]\""
+
+            file.appendText(
+                "${subject.subjectId},${subject.layout},${subject.dateText}," +
+                        "${order.orderNr},${order.orderId},${session.screen},${clicksCell}\n"
+            )
+        }
+        return file
+    }
+
+    fun downloadDataCsv(context: Context): File {
 
         val internalFile = File(
             context.filesDir,
-            "research_data.csv"
+            "research_data.txt"
         )
 
         // Destination in Downloads
@@ -121,7 +147,34 @@ class UserData : ViewModel() {
 
         val exportFile = File(
             downloadsDir,
-            "research_data_${System.currentTimeMillis()}.csv"
+            "research_data_${System.currentTimeMillis()}.txt"
+        )
+
+        // Copy contents
+        internalFile.copyTo(
+            target = exportFile,
+            overwrite = true
+        )
+
+        return exportFile
+    }
+
+    fun downloadClicksCsv(context: Context): File {
+
+        val internalFile = File(
+            context.filesDir,
+            "clicks.txt"
+        )
+
+        // Destination in Downloads
+        val downloadsDir =
+            Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS
+            )
+
+        val exportFile = File(
+            downloadsDir,
+            "clicks_${System.currentTimeMillis()}.txt"
         )
 
         // Copy contents

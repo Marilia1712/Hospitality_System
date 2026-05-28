@@ -18,7 +18,7 @@ object OrderMatcher {
 
         // If an order was found, store its ID and return true
         return if (matchingOrder != null) {
-            userData.orderId = matchingOrder.orderId
+            userData.order.orderId = matchingOrder.orderId
             true
         } else {
             false // No matching order found

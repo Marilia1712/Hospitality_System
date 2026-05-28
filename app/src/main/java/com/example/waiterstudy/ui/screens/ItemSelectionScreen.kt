@@ -25,6 +25,7 @@ import com.example.waiterstudy.ui.theme.*
 import com.example.waiterstudy.viewmodel.OrderViewModel
 import com.example.waiterstudy.userData.UserData
 import com.example.waiterstudy.ui.components.Banner2
+import com.example.waiterstudy.ui.components.TrackedScreen
 
 @Composable
 fun ItemSelectionScreen(
@@ -32,7 +33,6 @@ fun ItemSelectionScreen(
     viewModel: OrderViewModel,
     userData: UserData
 ) {
-
     val items = MenuItems.items
 
     var selectedItem by remember { mutableStateOf<Item?>(null) }
@@ -74,95 +74,102 @@ fun ItemSelectionScreen(
         )
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(BackgroundGray)
-            .padding(horizontal = 16.dp)
-    ) {
+    TrackedScreen(screenName = "ItemSelection", userData = userData) {
 
-        Spacer(modifier = Modifier.height(72.dp))
-
-        Text(
-            text = "Place an order",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            color = DarkText,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center
-        )
-
-        Text(
-            text = "Table ${viewModel.selectedTable}",
-            style = MaterialTheme.typography.titleMedium,
-            color = DarkText,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center
-        )
-
-        // TOP BANNER
-        if (layout == "TOP_BANNER") {banner2()}
-
-        Box(
-            modifier = Modifier.weight(1f),
-            contentAlignment = Alignment.Center
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(BackgroundGray)
+                .padding(horizontal = 16.dp)
         ) {
 
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(3),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            Spacer(modifier = Modifier.height(72.dp))
+
+            Text(
+                text = "Place an order",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                color = DarkText,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+
+            Text(
+                text = "Table ${viewModel.selectedTable}",
+                style = MaterialTheme.typography.titleMedium,
+                color = DarkText,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+
+            // TOP BANNER
+            if (layout == "TOP_BANNER") {
+                banner2()
+            }
+
+            Box(
+                modifier = Modifier.weight(1f),
+                contentAlignment = Alignment.Center
             ) {
 
-                items(items) { item ->
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(3),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
 
-                    Card(
-                        modifier = Modifier
-                            .aspectRatio(1f)
-                            .clickable {
-                                selectedItem = item
-                                quantity = 1
-                            },
-                        colors = CardDefaults.cardColors(
-                            containerColor =
-                                if (selectedItem == item)
-                                    BlueButton
-                                else
-                                    DarkButton
-                        )
-                    ) {
+                    items(items) { item ->
 
-                        Column(
+                        Card(
                             modifier = Modifier
-                                .fillMaxSize()
-                                .padding(8.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
+                                .aspectRatio(1f)
+                                .clickable {
+                                    selectedItem = item
+                                    quantity = 1
+                                },
+                            colors = CardDefaults.cardColors(
+                                containerColor =
+                                    if (selectedItem == item)
+                                        BlueButton
+                                    else
+                                        DarkButton
+                            )
                         ) {
 
-                            Image(
-                                painter = painterResource(id = item.imageRes),
-                                contentDescription = item.name,
+                            Column(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .weight(1f),
-                                contentScale = ContentScale.Crop
-                            )
+                                    .fillMaxSize()
+                                    .padding(8.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
 
-                            Spacer(modifier = Modifier.height(8.dp))
+                                Image(
+                                    painter = painterResource(id = item.imageRes),
+                                    contentDescription = item.name,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .weight(1f),
+                                    contentScale = ContentScale.Crop
+                                )
 
-                            Text(
-                                text = item.name,
-                                color = WhiteText,
-                                textAlign = TextAlign.Center
-                            )
+                                Spacer(modifier = Modifier.height(8.dp))
+
+                                Text(
+                                    text = item.name,
+                                    color = WhiteText,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
                         }
                     }
                 }
             }
-        }
 
-        // BOTTOM BANNER
-        if (layout == "BOTTOM_BANNER") {banner2()}
+            // BOTTOM BANNER
+            if (layout == "BOTTOM_BANNER") {
+                banner2()
+            }
+        }
     }
 }

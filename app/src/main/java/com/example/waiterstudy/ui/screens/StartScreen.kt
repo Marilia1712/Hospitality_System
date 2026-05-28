@@ -19,6 +19,7 @@ import androidx.navigation.NavController
 
 import com.example.waiterstudy.R
 import com.example.waiterstudy.navigation.AppScreen
+import com.example.waiterstudy.ui.components.TrackedScreen
 import com.example.waiterstudy.ui.theme.*
 import com.example.waiterstudy.userData.UserData
 
@@ -27,109 +28,110 @@ fun StartScreen(
     navController: NavController,
     userData: UserData
 ) {
+    TrackedScreen(screenName = "Start", userData = userData) {
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(BackgroundGray)
-            .padding(16.dp),
-
-        verticalArrangement = Arrangement.SpaceBetween,
-
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        // HEADER
-        Text(
-            text = "Ready?",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            color = DarkText,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center
-        )
-
-        // PLAY AREA
         Column(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(BackgroundGray)
+                .padding(16.dp),
 
-            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween,
 
-            verticalArrangement = Arrangement.Center
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Box(
-                modifier = Modifier
-                    .size(140.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(Yellow),
+            // HEADER
+            Text(
+                text = "Ready?",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                color = DarkText,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
 
-                contentAlignment = Alignment.Center
+            // PLAY AREA
+            Column(
+                modifier = Modifier.weight(1f),
+
+                horizontalAlignment = Alignment.CenterHorizontally,
+
+                verticalArrangement = Arrangement.Center
             ) {
 
-                Column(
-                    modifier = Modifier.clickable {
+                Box(
+                    modifier = Modifier
+                        .size(140.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Yellow),
 
-                        /*
-                        Reset order tracking
-                        before new run starts
-                        */
-
-                        userData.startTimeStamp = System.currentTimeMillis()
-                        userData.orderNr = 1
-
-                        navController.navigate(
-                            AppScreen.TableSelection.route
-                        )
-
-                    },
-
-                    horizontalAlignment =
-                        Alignment.CenterHorizontally
+                    contentAlignment = Alignment.Center
                 ) {
 
-                    Image(
-                        painter = painterResource(
-                            id = R.drawable.playbutton
-                        ),
+                    Column(
+                        modifier = Modifier.clickable {
 
-                        contentDescription = "Start",
+                            /*
+                            Reset order tracking
+                            before new run starts
+                            */
+                            userData.order.startTimeStamp = System.currentTimeMillis()
+                            userData.order.orderNr = 1
 
-                        modifier = Modifier.size(64.dp),
+                            navController.navigate(
+                                AppScreen.TableSelection.route
+                            )
 
-                        contentScale = ContentScale.Fit
-                    )
+                        },
+
+                        horizontalAlignment =
+                            Alignment.CenterHorizontally
+                    ) {
+
+                        Image(
+                            painter = painterResource(
+                                id = R.drawable.playbutton
+                            ),
+
+                            contentDescription = "Start",
+
+                            modifier = Modifier.size(64.dp),
+
+                            contentScale = ContentScale.Fit
+                        )
+                    }
                 }
+
+                Spacer(
+                    modifier = Modifier.height(8.dp)
+                )
+
+                Text(
+                    text = "Start",
+
+                    fontWeight = FontWeight.Bold,
+
+                    color = DarkText
+                )
             }
 
-            Spacer(
-                modifier = Modifier.height(8.dp)
-            )
+            // RUN INFO
+            Column(
+                horizontalAlignment =
+                    Alignment.CenterHorizontally
+            ) {
 
-            Text(
-                text = "Start",
+                Text(
+                    text =
+                        "Layout ${userData.subject.layout}",
 
-                fontWeight = FontWeight.Bold,
+                    style =
+                        MaterialTheme.typography.titleSmall,
 
-                color = DarkText
-            )
-        }
-
-        // RUN INFO
-        Column(
-            horizontalAlignment =
-                Alignment.CenterHorizontally
-        ) {
-
-            Text(
-                text =
-                    "Layout ${userData.subject.layout}",
-
-                style =
-                    MaterialTheme.typography.titleSmall,
-
-                color = DarkText
-            )
+                    color = DarkText
+                )
+            }
         }
     }
 }

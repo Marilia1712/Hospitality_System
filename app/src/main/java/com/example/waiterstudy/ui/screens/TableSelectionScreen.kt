@@ -22,6 +22,7 @@ import com.example.waiterstudy.ui.theme.WhiteText
 import com.example.waiterstudy.ui.theme.DarkText
 import androidx.compose.ui.text.style.TextAlign
 import com.example.waiterstudy.ui.components.Banner1
+import com.example.waiterstudy.ui.components.TrackedScreen
 import com.example.waiterstudy.ui.theme.BlueButton
 import com.example.waiterstudy.userData.UserData
 
@@ -49,64 +50,71 @@ fun TableSelectionScreen(
         )
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(BackgroundGray)
-            .padding(horizontal = 16.dp),
-    ) {
+    TrackedScreen(screenName = "TableSelection", userData = userData) {
 
-        Spacer(modifier = Modifier.height(72.dp))
-
-        Text(
-            text = "Select a table",
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-            color = DarkText,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center
-        )
-
-        if (layout == "TOP_BANNER") {banner1()}
-
-        Box(
-            modifier = Modifier.weight(1f),
-            contentAlignment = Alignment.Center
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(BackgroundGray)
+                .padding(horizontal = 16.dp),
         ) {
 
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(3),
+            Spacer(modifier = Modifier.height(72.dp))
+
+            Text(
+                text = "Select a table",
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.Bold,
+                color = DarkText,
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                textAlign = TextAlign.Center
+            )
+
+            if (layout == "TOP_BANNER") {
+                banner1()
+            }
+
+            Box(
+                modifier = Modifier.weight(1f),
+                contentAlignment = Alignment.Center
             ) {
 
-                items(tables) { table ->
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(3),
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
 
-                    Box(
-                        modifier = Modifier
-                            .aspectRatio(1f)
-                            .background(
-                                color = if (selectedTable == table) BlueButton else DarkButton,
-                                shape = RoundedCornerShape(12.dp)
+                    items(tables) { table ->
+
+                        Box(
+                            modifier = Modifier
+                                .aspectRatio(1f)
+                                .background(
+                                    color = if (selectedTable == table) BlueButton else DarkButton,
+                                    shape = RoundedCornerShape(12.dp)
+                                )
+                                .clickable {
+                                    selectedTable = table
+                                },
+                            contentAlignment = Alignment.Center
+                        ) {
+
+                            Text(
+                                text = table.toString(),
+                                style = MaterialTheme.typography.headlineLarge,
+                                fontWeight = FontWeight.Bold,
+                                color = WhiteText
                             )
-                            .clickable {
-                                selectedTable = table
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-
-                        Text(
-                            text = table.toString(),
-                            style = MaterialTheme.typography.headlineLarge,
-                            fontWeight = FontWeight.Bold,
-                            color = WhiteText
-                        )
+                        }
                     }
                 }
             }
-        }
 
-        if (layout == "BOTTOM_BANNER") {banner1()}
+            if (layout == "BOTTOM_BANNER") {
+                banner1()
+            }
+        }
     }
 }
